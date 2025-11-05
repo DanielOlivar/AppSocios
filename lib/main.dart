@@ -232,24 +232,6 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-/*
-// Pantalla Membresia (placeholder)
-class MembresiaView extends StatelessWidget {
-  final ContratoData datosContrato;
-
-  const MembresiaView({super.key, required this.datosContrato});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Membresía')),
-      body: Center(
-        child: Text('Bienvenido, ${datosContrato.nombre1 ?? ''}'),
-      ),
-    );
-  }
-}*/
-
 void main() {
   runApp(const MyApp());
 }
