@@ -15,13 +15,6 @@ class InicioView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String nombre = [
-      datosContrato.nombre1,
-      datosContrato.nombre2,
-      datosContrato.nombre3,
-      datosContrato.nombre4,
-    ].where((n) => n != null && n!.isNotEmpty).join(' ');
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
@@ -43,17 +36,10 @@ class InicioView extends StatelessWidget {
           ],
         ),
       ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            //const SizedBox(height: 10),
-            /*const Icon(Icons.person_pin,
-                size: 100, color: Color.fromRGBO(14, 30, 197, 1)),
-            const SizedBox(height: 10),*/
-
-            // ✅ Bienvenida + Logout (bloque agregado)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -83,17 +69,6 @@ class InicioView extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 15),
-
-            /*Text(
-              'Bienvenido, $nombre',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(14, 30, 197, 1),
-              ),
-            ),
-            const SizedBox(height: 25),*/
 
             // Datos de contrato
             Card(
