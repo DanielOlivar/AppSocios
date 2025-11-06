@@ -55,7 +55,7 @@ class _LoginViewState extends State<LoginView> {
     _checkSession(); // Verificar sesión activa
   }
 
-  /// ✅ Verifica si hay sesión guardada
+  // Verifica si hay sesión guardada
   Future<void> _checkSession() async {
     final prefs = await SharedPreferences.getInstance();
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
@@ -234,7 +234,7 @@ class _LoginViewState extends State<LoginView> {
 
 
 void main() {
-  print('🌐 API_BASE_URL: $API_BASE_URL');
+  print('API_BASE_URL: $API_BASE_URL');
   runApp(const MyApp());
 }
 
