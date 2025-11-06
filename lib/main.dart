@@ -6,24 +6,13 @@ import '../ContratoData/ContratoData.dart';
 import '../InicioView/InicioView.dart';
 import '../config.dart';
 
-class GrandTabView extends StatelessWidget {
-  const GrandTabView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('GrandTabView')));
-  }
-}
-
-// Servicio API
 class APILogin {
   Future<List<ContratoData>> validarContrato(
-    String contrato,
+    String usuario,
     String password,
   ) async {
-    final url = Uri.parse('$API_BASE_URL/api/sp_Sel_Valida_Contrato'); 
-
-    final body = jsonEncode({"Contrato": contrato, "Password": password});
+    final url = Uri.parse('$API_BASE_URL/api/sp_Sel_Valida_Usuario');
+    final body = jsonEncode({"user": usuario, "password": password});
 
     try {
       final response = await http.post(
@@ -46,7 +35,6 @@ class APILogin {
   }
 }
 
-// Pantalla Login
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -59,36 +47,41 @@ class _LoginViewState extends State<LoginView> {
   final passwordController = TextEditingController();
   final apiLogin = APILogin();
   String? errorMessage;
-  bool isAuthenticated = false;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _autoLogin();
+    _checkSession(); // Verificar sesión activa
   }
 
-  Future<void> _autoLogin() async {
+  /// ✅ Verifica si hay sesión guardada
+  Future<void> _checkSession() async {
     final prefs = await SharedPreferences.getInstance();
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final user = prefs.getString('user');
+    final password = prefs.getString('password');
 
-    if (isLoggedIn) {
-      contratoController.text = prefs.getString('contrato') ?? '';
-      passwordController.text = prefs.getString('password') ?? '';
+    if (user != null) contratoController.text = user;
+    if (password != null) passwordController.text = password;
 
-      if (contratoController.text.isNotEmpty &&
-          passwordController.text.isNotEmpty) {
-        final datos = await apiLogin.validarContrato(
-          contratoController.text,
-          passwordController.text,
+    if (isLoggedIn && user != null && password != null) {
+      final datos = await apiLogin.validarContrato(user, password);
+
+      if (datos.isNotEmpty && datos.first.nombre.isNotEmpty) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InicioView(datosContrato: datos.first),
+          ),
         );
-        if (datos.isNotEmpty && datos.first.error == 'Ok') {
-          setState(() {
-            isAuthenticated = true;
-          });
-          _navigateToMembresia(datos.first);
-        }
+        return;
       }
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> _login() async {
@@ -96,23 +89,26 @@ class _LoginViewState extends State<LoginView> {
       errorMessage = null;
     });
 
-    final datos = await apiLogin.validarContrato(
-      contratoController.text,
-      passwordController.text,
-    );
+    final usuario = contratoController.text.trim();
+    final password = passwordController.text.trim();
+
+    final datos = await apiLogin.validarContrato(usuario, password);
 
     if (datos.isNotEmpty) {
-      if (datos.first.error == 'Ok') {
+      final contrato = datos.first;
+
+      if (contrato.nombre.isNotEmpty) {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('contrato', contratoController.text);
-        await prefs.setString('password', passwordController.text);
+        await prefs.setString('user', usuario);
+        await prefs.setString('password', password);
         await prefs.setBool('isLoggedIn', true);
 
-        setState(() {
-          isAuthenticated = true;
-        });
-
-        _navigateToMembresia(datos.first);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InicioView(datosContrato: contrato),
+          ),
+        );
       } else {
         setState(() {
           errorMessage = 'Contrato o contraseña incorrectos.';
@@ -125,17 +121,18 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  void _navigateToMembresia(ContratoData datosContrato) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => InicioView(datosContrato: datosContrato),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Color.fromRGBO(14, 30, 197, 1),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
@@ -157,21 +154,23 @@ class _LoginViewState extends State<LoginView> {
           ],
         ),
       ),
-
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Center(
+        child: SafeArea(
           child: SingleChildScrollView(
+            padding: const EdgeInsets.only(top: 40),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Icon(
                   Icons.person,
-                  size: 100,
-                  color: const Color.fromRGBO(14, 30, 197, 1),
+                  size: 90,
+                  color: Color.fromRGBO(14, 30, 197, 1),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
                     controller: contratoController,
                     decoration: const InputDecoration(
@@ -184,7 +183,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 const SizedBox(height: 15),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: TextField(
                     controller: passwordController,
                     decoration: const InputDecoration(
@@ -196,23 +195,23 @@ class _LoginViewState extends State<LoginView> {
                     autocorrect: false,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 ElevatedButton(
-                  onPressed:
-                      contratoController.text.isEmpty ||
-                          passwordController.text.isEmpty
-                      ? null
-                      : _login,
+                  onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 10,
+                      horizontal: 50,
+                      vertical: 15,
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30), // 🔹 Redondeado estilo “pill”
+                    ),
+                    elevation: 3,
                   ),
                   child: const Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    'Iniciar sesión',
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                   ),
                 ),
                 if (errorMessage != null)
@@ -232,7 +231,10 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
+
+
 void main() {
+  print('🌐 API_BASE_URL: $API_BASE_URL');
   runApp(const MyApp());
 }
 
