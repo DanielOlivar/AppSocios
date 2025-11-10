@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../ContratoData/ContratoData.dart';
 import '../InicioView/InicioView.dart';
 import '../config.dart';
+import '../MainTabView/MainTabView.dart';
+
+
 
 class APILogin {
   Future<List<ContratoData>> validarContrato(
@@ -72,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioView(datosContrato: datos.first),
+            builder: (context) => MainTabView(datosContrato: datos.first),
           ),
         );
         return;
@@ -205,7 +208,9 @@ class _LoginViewState extends State<LoginView> {
                       vertical: 15,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30), // 🔹 Redondeado estilo “pill”
+                      borderRadius: BorderRadius.circular(
+                        30,
+                      ), 
                     ),
                     elevation: 3,
                   ),
@@ -230,8 +235,6 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
-
 
 void main() {
   print('API_BASE_URL: $API_BASE_URL');
