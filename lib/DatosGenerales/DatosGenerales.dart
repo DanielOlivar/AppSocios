@@ -144,177 +144,177 @@ class _DatosGeneralesState extends State<DatosGenerales> {
   }
 
   Widget _buildSection({
-    required String title,
-    required List<Map<String, String>> dataList,
-    required TextEditingController nombre,
-    required TextEditingController paterno,
-    required TextEditingController materno,
-    required TextEditingController ocupacion,
-    required TextEditingController cumple,
-    required String? parentesco,
-    required ValueChanged<String?> onParentescoChanged,
-    required int? Function() getSelectedIndex,
-    required void Function(int?) setSelectedIndex,
-    required void Function(int) onSelectRow,
-  }) {
-    return Card(
-      elevation: 4,
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            color: const Color.fromRGBO(14, 30, 197, 1),
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+  required String title,
+  required List<Map<String, String>> dataList,
+  required TextEditingController nombre,
+  required TextEditingController paterno,
+  required TextEditingController materno,
+  required TextEditingController ocupacion,
+  required TextEditingController cumple,
+  required String? parentesco,
+  required ValueChanged<String?> onParentescoChanged,
+  required int? Function() getSelectedIndex,
+  required void Function(int?) setSelectedIndex,
+  required void Function(int) onSelectRow,
+}) {
+  return Card(
+    elevation: 4,
+    clipBehavior: Clip.antiAlias,
+    child: Column(
+      children: [
+        Container(
+          width: double.infinity,
+          color: const Color.fromRGBO(14, 30, 197, 1),
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // formulario (2 filas)
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // fila 1: Nombre | A. Paterno | A. Materno | Cumpleaños
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildLabeledField("Nombre(s):", nombre),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: _buildLabeledField("A. Paterno:", paterno),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: _buildLabeledField("A. Materno:", materno),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _label("Cumpleaños (dd/Mes/yyyy):"),
-                                _cumpleTextFieldController(cumple),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      // fila 2: Ocupacion | Parentesco
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildLabeledField("Ocupación:", ocupacion),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _label("Parentesco:"),
-                                _parentescoDropdown(
-                                  parentesco,
-                                  onParentescoChanged,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 20),
-                // botones (actúan sobre la lista pasada)
-                Column(
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // formulario (2 filas + tabla)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _button(
-                      "Nuevo",
-                      Colors.green,
-                      () => _agregarRegistro(
-                        list: dataList,
-                        nombre: nombre,
-                        paterno: paterno,
-                        materno: materno,
-                        ocupacion: ocupacion,
-                        cumple: cumple,
-                        parentesco: parentesco,
-                        resetParentesco: onParentescoChanged,
-                      ),
+                    // fila 1: Nombre | A. Paterno | A. Materno | Cumpleaños
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildLabeledField("Nombre(s):", nombre),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _buildLabeledField("A. Paterno:", paterno),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _buildLabeledField("A. Materno:", materno),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _label("Cumpleaños (dd/Mes/yyyy):"),
+                              _cumpleTextFieldController(cumple),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    _button(
-                      "Limpiar",
-                      Colors.orange,
-                      () => _limpiarCampos(
-                        nombre: nombre,
-                        paterno: paterno,
-                        materno: materno,
-                        ocupacion: ocupacion,
-                        cumple: cumple,
-                        resetParentesco: onParentescoChanged,
-                        clearSelection: () => setSelectedIndex(null),
-                      ),
+                    const SizedBox(height: 10),
+                    // fila 2: Ocupación | Parentesco
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildLabeledField("Ocupación:", ocupacion),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _label("Parentesco:"),
+                              _parentescoDropdown(
+                                parentesco,
+                                onParentescoChanged,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    _button(
-                      "Modificar",
-                      Colors.blue,
-                      () => _modificarRegistro(
-                        list: dataList,
-                        nombre: nombre,
-                        paterno: paterno,
-                        materno: materno,
-                        ocupacion: ocupacion,
-                        cumple: cumple,
-                        parentesco: parentesco,
-                        getSelectedIndex: getSelectedIndex,
-                        resetParentesco: onParentescoChanged,
-                        clearSelection: () => setSelectedIndex(null),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    _button(
-                      "Borrar",
-                      Colors.red,
-                      () => _borrarRegistro(
-                        list: dataList,
-                        getSelectedIndex: getSelectedIndex,
-                        clearSelection: () => setSelectedIndex(null),
-                      ),
+                    const SizedBox(height: 16),
+                    // tabla colocada debajo del formulario
+                    _buildTable(
+                      dataList: dataList,
+                      selectedIndex: getSelectedIndex(),
+                      onSelect: (index) {
+                        setSelectedIndex(index);
+                        onSelectRow(index);
+                      },
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 20),
+              // botones
+              Column(
+                children: [
+                  _button(
+                    "Nuevo",
+                    Colors.green,
+                    () => _agregarRegistro(
+                      list: dataList,
+                      nombre: nombre,
+                      paterno: paterno,
+                      materno: materno,
+                      ocupacion: ocupacion,
+                      cumple: cumple,
+                      parentesco: parentesco,
+                      resetParentesco: onParentescoChanged,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _button(
+                    "Limpiar",
+                    Colors.orange,
+                    () => _limpiarCampos(
+                      nombre: nombre,
+                      paterno: paterno,
+                      materno: materno,
+                      ocupacion: ocupacion,
+                      cumple: cumple,
+                      resetParentesco: onParentescoChanged,
+                      clearSelection: () => setSelectedIndex(null),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _button(
+                    "Modificar",
+                    Colors.blue,
+                    () => _modificarRegistro(
+                      list: dataList,
+                      nombre: nombre,
+                      paterno: paterno,
+                      materno: materno,
+                      ocupacion: ocupacion,
+                      cumple: cumple,
+                      parentesco: parentesco,
+                      getSelectedIndex: getSelectedIndex,
+                      resetParentesco: onParentescoChanged,
+                      clearSelection: () => setSelectedIndex(null),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  _button(
+                    "Borrar",
+                    Colors.red,
+                    () => _borrarRegistro(
+                      list: dataList,
+                      getSelectedIndex: getSelectedIndex,
+                      clearSelection: () => setSelectedIndex(null),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          // tabla con selección
-          _buildTable(
-            dataList: dataList,
-            selectedIndex: getSelectedIndex(),
-            onSelect: (index) {
-              // cuando se selecciona, actualizamos el índice y cargamos los campos
-              setSelectedIndex(index);
-              onSelectRow(index);
-            },
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildLabeledField(String label, TextEditingController controller) {
     return Column(
@@ -500,54 +500,68 @@ class _DatosGeneralesState extends State<DatosGenerales> {
   }
 
   Widget _buildTable({
-    required List<Map<String, String>> dataList,
-    required int? selectedIndex,
-    required void Function(int) onSelect,
-  }) {
-    return Container(
-      color: Colors.grey[200],
-      constraints: const BoxConstraints(minHeight: 80),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          headingRowColor: MaterialStateProperty.all(Colors.grey[300]),
-          dataRowColor: MaterialStateProperty.resolveWith<Color?>(
-            (states) => states.contains(MaterialState.selected)
-                ? const Color.fromRGBO(14, 30, 197, 0.2)
-                : Colors.white,
-          ),
-          columns: const [
-            DataColumn(label: Text("Nombre(s)")),
-            DataColumn(label: Text("A. Paterno")),
-            DataColumn(label: Text("A. Materno")),
-            DataColumn(label: Text("Ocupación")),
-            DataColumn(label: Text("Parentesco")),
-            DataColumn(label: Text("Cumpleaños")),
-          ],
-          rows: List<DataRow>.generate(
-            dataList.length,
-            (index) => DataRow(
-              selected: selectedIndex == index,
-              onSelectChanged: (sel) {
-                if (sel == true)
-                  onSelect(index);
-                else
-                  onSelect(-1); // deseleccionar
-              },
-              cells: [
-                DataCell(Text(dataList[index]["nombre"] ?? "")),
-                DataCell(Text(dataList[index]["paterno"] ?? "")),
-                DataCell(Text(dataList[index]["materno"] ?? "")),
-                DataCell(Text(dataList[index]["ocupacion"] ?? "")),
-                DataCell(Text(dataList[index]["parentesco"] ?? "")),
-                DataCell(Text(dataList[index]["cumple"] ?? "")),
-              ],
-            ),
-          ),
-        ),
+  required List<Map<String, String>> dataList,
+  required int? selectedIndex,
+  required void Function(int) onSelect,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: const Color.fromRGBO(14, 30, 197, 1), width: 1.5),
+    ),
+    child: DataTable(
+      headingRowColor: WidgetStateProperty.all(
+        const Color.fromRGBO(14, 30, 197, 1),
       ),
-    );
-  }
+      headingTextStyle: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+      dataRowColor: WidgetStateProperty.resolveWith<Color?>(
+        (states) {
+          if (states.contains(WidgetState.selected)) {
+            return const Color.fromRGBO(14, 30, 197, 0.2); // azul claro al seleccionar
+          }
+          return Colors.white; // color normal
+        },
+      ),
+      columns: const [
+        DataColumn(label: Text("Nombre")),
+        DataColumn(label: Text("A. Paterno")),
+        DataColumn(label: Text("A. Materno")),
+        DataColumn(label: Text("Cumpleaños")),
+        DataColumn(label: Text("Ocupación")),
+        DataColumn(label: Text("Parentesco")),
+      ],
+      rows: List.generate(dataList.length, (index) {
+        final item = dataList[index];
+        final isSelected = index == selectedIndex;
+
+        return DataRow(
+          selected: isSelected,
+          onSelectChanged: (_) => onSelect(index),
+          color: WidgetStateProperty.resolveWith<Color?>(
+            (states) => isSelected
+                ? const Color.fromRGBO(14, 30, 197, 0.15)
+                : (index % 2 == 0
+                    ? Colors.grey.shade100
+                    : Colors.grey.shade200),
+          ),
+          cells: [
+            DataCell(Text(item["nombre"] ?? "")),
+            DataCell(Text(item["paterno"] ?? "")),
+            DataCell(Text(item["materno"] ?? "")),
+            DataCell(Text(item["cumple"] ?? "")),
+            DataCell(Text(item["ocupacion"] ?? "")),
+            DataCell(Text(item["parentesco"] ?? "")),
+          ],
+        );
+      }),
+    ),
+  );
+}
+
 
   // ---------- CRUD helpers para sección genérica ----------
   void _agregarRegistro({
