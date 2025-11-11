@@ -1,1 +1,1 @@
-const String API_BASE_URL = "http://187.243.243.220:5500";
+const String API_BASE_URL = "http://187.243.243.220:5500/api/sp_Sel_Valida_Usuario";

@@ -14,7 +14,7 @@ class APILogin {
     String usuario,
     String password,
   ) async {
-    final url = Uri.parse('$API_BASE_URL/api/sp_Sel_Valida_Usuario');
+    final url = Uri.parse('$API_BASE_URL');
     final body = jsonEncode({"user": usuario, "password": password});
 
     try {
