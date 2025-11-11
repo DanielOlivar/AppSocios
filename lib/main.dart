@@ -114,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
         );
       } else {
         setState(() {
-          errorMessage = 'Contrato o contraseña incorrectos.';
+          errorMessage = 'Usuario o contraseña incorrectos.';
         });
       }
     } else {
