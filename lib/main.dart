@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../ContratoData/ContratoData.dart';
-import '../InicioView/InicioView.dart';
 import '../config.dart';
 import '../MainTabView/MainTabView.dart';
-
-
 
 class APILogin {
   Future<List<ContratoData>> validarContrato(
@@ -109,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => InicioView(datosContrato: contrato),
+            builder: (context) => MainTabView(datosContrato: contrato),
           ),
         );
       } else {

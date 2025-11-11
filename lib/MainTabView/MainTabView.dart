@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../ContratoData/ContratoData.dart';
-import '../InicioView/InicioView.dart';
 import '../DatosGenerales/DatosGenerales.dart';
 
 class MainTabView extends StatefulWidget {
@@ -22,11 +21,12 @@ class _MainTabViewState extends State<MainTabView> {
     super.initState();
 
     _pages = [
-      InicioView(datosContrato: widget.datosContrato),
-      const DatosGenerales(),
-      const PlaceholderView(title: 'Financiamiento'),
-      const PlaceholderView(title: 'Otros'),
-    ];
+  DatosGenerales(datosContrato: widget.datosContrato),
+  const PlaceholderView(title: 'Condiciones'),
+  const PlaceholderView(title: 'Financiamiento'),
+  const PlaceholderView(title: 'Otros'),
+];
+
   }
 
   void _onItemTapped(int index) {

@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../ContratoData/ContratoData.dart'; 
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class DatosGenerales extends StatefulWidget {
-  const DatosGenerales({super.key});
+  final ContratoData datosContrato;
+
+  const DatosGenerales({super.key, required this.datosContrato});
 
   @override
   State<DatosGenerales> createState() => _DatosGeneralesState();
 }
+
+Future<void> _logout(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
+  Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+}
+
 
 class _DatosGeneralesState extends State<DatosGenerales> {
   // === CONTROLADORES TITULARES ===
@@ -52,25 +64,59 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Cotización de Venta",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
-          bottom: const TabBar(
-            isScrollable: true,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.grey,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
-            tabs: [
-              Tab(text: "TITULARES / BENEFICIARIOS"),
-              Tab(text: "DIRECCIÓN / TELÉFONOS / E-MAIL"),
-              Tab(text: "DATOS FISCALES (RFC)"),
-            ],
+       appBar: AppBar(
+  backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
+  title: const Text(
+    "Cotización de Venta",
+    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+  ),
+  actions: [
+    TextButton(
+      onPressed: () => _logout(context),
+      child: const Text(
+        "Cerrar sesión",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+    const SizedBox(width: 10),
+  ],
+  bottom: PreferredSize(
+    preferredSize: const Size.fromHeight(70),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Text(
+            "Bienvenido, ${widget.datosContrato.nombre.isNotEmpty ? widget.datosContrato.nombre : 'Usuario'}",
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
+        const TabBar(
+          isScrollable: true,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.grey,
+          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+          tabs: [
+            Tab(text: "TITULARES / BENEFICIARIOS"),
+            Tab(text: "DIRECCIÓN / TELÉFONOS / E-MAIL"),
+            Tab(text: "DATOS FISCALES (RFC)"),
+          ],
+        ),
+      ],
+    ),
+  ),
+),
+
+
         body: TabBarView(
           children: [
             _buildTitularesBeneficiariosTab(),
