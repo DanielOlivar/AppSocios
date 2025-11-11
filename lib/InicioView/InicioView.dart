@@ -17,7 +17,7 @@ class InicioView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
+        backgroundColor: const Color.fromRGBO(18, 12, 36, 1),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Row(
@@ -61,7 +61,7 @@ class InicioView extends StatelessWidget {
                   child: const Text(
                     "Cerrar sesión",
                     style: TextStyle(
-                      color: Color.fromRGBO(14, 30, 197, 1),
+                      color: Color.fromRGBO(18, 12, 36, 1),
                       fontSize: 15,
                     ),
                   ),
@@ -80,7 +80,7 @@ class InicioView extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(
                   Icons.credit_card,
-                  color: Color.fromRGBO(14, 30, 197, 1),
+                  color: Color.fromRGBO(18, 12, 36, 1),
                 ),
                 title: const Text('Número de empleado'),
                 subtitle: Text(
@@ -100,7 +100,7 @@ class InicioView extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(
                     Icons.star,
-                    color: Color.fromRGBO(14, 30, 197, 1),
+                    color: Color.fromRGBO(18, 12, 36, 1),
                   ),
                   title: const Text('Nivel'),
                   subtitle: Text(datosContrato.nivel!),
@@ -119,7 +119,7 @@ class InicioView extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(
                     Icons.layers,
-                    color: Color.fromRGBO(14, 30, 197, 1),
+                    color: Color.fromRGBO(18, 12, 36, 1),
                   ),
                   title: const Text('Segmento'),
                   subtitle: Text(datosContrato.segmento!.toString()),
@@ -138,7 +138,7 @@ class InicioView extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(
                     Icons.group,
-                    color: Color.fromRGBO(14, 30, 197, 1),
+                    color: Color.fromRGBO(18, 12, 36, 1),
                   ),
                   title: const Text('Grupo'),
                   subtitle: Text(datosContrato.grupo!),
@@ -158,7 +158,7 @@ class InicioView extends StatelessWidget {
                 child: ListTile(
                   leading: const Icon(
                     Icons.insert_drive_file,
-                    color: Color.fromRGBO(14, 30, 197, 1),
+                    color: Color.fromRGBO(18, 12, 36, 1),
                   ),
                   title: const Text('Ver contrato'),
                   subtitle: Text(datosContrato.urlContrato!),
@@ -181,10 +181,10 @@ class InicioView extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: ListTile(
+                child: ListTile(   
                   leading: const Icon(
                     Icons.book_outlined,
-                    color: Color.fromRGBO(14, 30, 197, 1),
+                    color: Color.fromRGBO(18, 12, 36, 1),
                   ),
                   title: const Text('Ver reglamento'),
                   subtitle: Text(datosContrato.urlReglamento!),

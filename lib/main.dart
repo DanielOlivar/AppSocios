@@ -130,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(
-            color: Color.fromRGBO(14, 30, 197, 1),
+            color: Color.fromRGBO(8, 12, 36, 1),
           ),
         ),
       );
@@ -138,7 +138,7 @@ class _LoginViewState extends State<LoginView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
+        backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Row(
@@ -169,7 +169,7 @@ class _LoginViewState extends State<LoginView> {
                 const Icon(
                   Icons.person,
                   size: 90,
-                  color: Color.fromRGBO(14, 30, 197, 1),
+                  color: Color.fromRGBO(8, 12, 36, 1),
                 ),
                 const SizedBox(height: 25),
                 Padding(
@@ -202,7 +202,7 @@ class _LoginViewState extends State<LoginView> {
                 ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
+                    backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 50,
                       vertical: 15,
@@ -251,7 +251,7 @@ class MyApp extends StatelessWidget {
       title: 'Pacífica Resorts',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromRGBO(14, 30, 197, 1),
+          seedColor: const Color.fromRGBO(8, 12, 36, 1),
         ),
         useMaterial3: true,
       ),

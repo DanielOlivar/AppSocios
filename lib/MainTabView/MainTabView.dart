@@ -43,7 +43,7 @@ class _MainTabViewState extends State<MainTabView> {
         top: false,
         bottom: false,
         child: BottomNavigationBar(
-          backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
+          backgroundColor: const Color.fromRGBO(8, 12, 36, 1.0),
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           selectedItemColor: Colors.white,
@@ -83,7 +83,7 @@ class PlaceholderView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
+        backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
         centerTitle: true,
       ),
       body: Center(

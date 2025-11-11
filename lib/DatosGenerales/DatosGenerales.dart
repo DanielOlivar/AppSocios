@@ -57,7 +57,7 @@ class _DatosGeneralesState extends State<DatosGenerales> {
             "Cotización de Venta",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          backgroundColor: const Color.fromRGBO(14, 30, 197, 1),
+          backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
           bottom: const TabBar(
             isScrollable: true,
             labelColor: Colors.white,
@@ -164,7 +164,7 @@ class _DatosGeneralesState extends State<DatosGenerales> {
       children: [
         Container(
           width: double.infinity,
-          color: const Color.fromRGBO(14, 30, 197, 1),
+          color: const Color.fromRGBO(8, 12, 36, 1),
           padding: const EdgeInsets.all(10),
           child: Text(
             title,
@@ -508,11 +508,11 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(8),
-      border: Border.all(color: const Color.fromRGBO(14, 30, 197, 1), width: 1.5),
+      border: Border.all(color: const Color.fromRGBO(8, 12, 36, 1), width: 1.5),
     ),
     child: DataTable(
       headingRowColor: WidgetStateProperty.all(
-        const Color.fromRGBO(14, 30, 197, 1),
+        const Color.fromRGBO(8, 12, 36, 1),
       ),
       headingTextStyle: const TextStyle(
         color: Colors.white,
