@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../ContratoData/ContratoData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Direcciones/DireccionesView.dart';
 
 class DatosGenerales extends StatefulWidget {
   final ContratoData datosContrato;
@@ -43,7 +44,18 @@ class _DatosGeneralesState extends State<DatosGenerales> {
 
   // meses válidos (abreviados en español)
   final List<String> _mesesValidos = [
-    "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
+    "Ene",
+    "Feb",
+    "Mar",
+    "Abr",
+    "May",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dic",
   ];
 
   @override
@@ -108,9 +120,7 @@ class _DatosGeneralesState extends State<DatosGenerales> {
         body: TabBarView(
           children: [
             _buildTitularesBeneficiariosTab(),
-            const Center(
-              child: Text("Contenido de Dirección / Teléfonos / E-Mail"),
-            ),
+            DireccionesView(),
             const Center(child: Text("Contenido de Datos Fiscales (RFC)")),
           ],
         ),
