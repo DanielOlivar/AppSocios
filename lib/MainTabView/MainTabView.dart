@@ -21,12 +21,11 @@ class _MainTabViewState extends State<MainTabView> {
     super.initState();
 
     _pages = [
-  DatosGenerales(datosContrato: widget.datosContrato),
-  const PlaceholderView(title: 'Condiciones'),
-  const PlaceholderView(title: 'Financiamiento'),
-  const PlaceholderView(title: 'Otros'),
-];
-
+      DatosGenerales(datosContrato: widget.datosContrato),
+      const PlaceholderView(title: 'Condiciones'),
+      const PlaceholderView(title: 'Financiamiento'),
+      const PlaceholderView(title: 'Otros'),
+    ];
   }
 
   void _onItemTapped(int index) {
@@ -50,10 +49,7 @@ class _MainTabViewState extends State<MainTabView> {
           unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,
           items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Datos',
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Datos'),
             BottomNavigationBarItem(
               icon: Icon(Icons.description),
               label: 'Condiciones',

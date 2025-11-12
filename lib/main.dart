@@ -126,9 +126,7 @@ class _LoginViewState extends State<LoginView> {
     if (isLoading) {
       return const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(
-            color: Color.fromRGBO(8, 12, 36, 1),
-          ),
+          child: CircularProgressIndicator(color: Color.fromRGBO(8, 12, 36, 1)),
         ),
       );
     }
@@ -205,9 +203,7 @@ class _LoginViewState extends State<LoginView> {
                       vertical: 15,
                     ),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        30,
-                      ), 
+                      borderRadius: BorderRadius.circular(30),
                     ),
                     elevation: 3,
                   ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../ContratoData/ContratoData.dart'; 
+import '../ContratoData/ContratoData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class DatosGenerales extends StatefulWidget {
   final ContratoData datosContrato;
@@ -18,7 +17,6 @@ Future<void> _logout(BuildContext context) async {
   await prefs.clear();
   Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
 }
-
 
 class _DatosGeneralesState extends State<DatosGenerales> {
   // === CONTROLADORES TITULARES ===
@@ -45,18 +43,7 @@ class _DatosGeneralesState extends State<DatosGenerales> {
 
   // meses válidos (abreviados en español)
   final List<String> _mesesValidos = [
-    "Ene",
-    "Feb",
-    "Mar",
-    "Abr",
-    "May",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dic",
+    "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
   ];
 
   @override
@@ -64,58 +51,59 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-       appBar: AppBar(
-  backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
-  title: const Text(
-    "Cotización de Venta",
-    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-  ),
-  actions: [
-    TextButton(
-      onPressed: () => _logout(context),
-      child: const Text(
-        "Cerrar sesión",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    ),
-    const SizedBox(width: 10),
-  ],
-  bottom: PreferredSize(
-    preferredSize: const Size.fromHeight(70),
-    child: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
-          child: Text(
-            "Bienvenido, ${widget.datosContrato.nombre.isNotEmpty ? widget.datosContrato.nombre : 'Usuario'}",
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+        appBar: AppBar(
+          backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
+          title: const Text(
+            "Cotización de Venta",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => _logout(context),
+              child: const Text(
+                "Cerrar sesión",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(70),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Text(
+                    "Bienvenido, ${widget.datosContrato.nombre.isNotEmpty ? widget.datosContrato.nombre : 'Usuario'}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const TabBar(
+                  isScrollable: true,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.grey,
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                  unselectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.normal,
+                  ),
+                  tabs: [
+                    Tab(text: "TITULARES / BENEFICIARIOS"),
+                    Tab(text: "DIRECCIÓN / TELÉFONOS / E-MAIL"),
+                    Tab(text: "DATOS FISCALES (RFC)"),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
-        const TabBar(
-          isScrollable: true,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey,
-          labelStyle: TextStyle(fontWeight: FontWeight.bold),
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
-          tabs: [
-            Tab(text: "TITULARES / BENEFICIARIOS"),
-            Tab(text: "DIRECCIÓN / TELÉFONOS / E-MAIL"),
-            Tab(text: "DATOS FISCALES (RFC)"),
-          ],
-        ),
-      ],
-    ),
-  ),
-),
-
 
         body: TabBarView(
           children: [
@@ -190,177 +178,176 @@ class _DatosGeneralesState extends State<DatosGenerales> {
   }
 
   Widget _buildSection({
-  required String title,
-  required List<Map<String, String>> dataList,
-  required TextEditingController nombre,
-  required TextEditingController paterno,
-  required TextEditingController materno,
-  required TextEditingController ocupacion,
-  required TextEditingController cumple,
-  required String? parentesco,
-  required ValueChanged<String?> onParentescoChanged,
-  required int? Function() getSelectedIndex,
-  required void Function(int?) setSelectedIndex,
-  required void Function(int) onSelectRow,
-}) {
-  return Card(
-    elevation: 4,
-    clipBehavior: Clip.antiAlias,
-    child: Column(
-      children: [
-        Container(
-          width: double.infinity,
-          color: const Color.fromRGBO(8, 12, 36, 1),
-          padding: const EdgeInsets.all(10),
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+    required String title,
+    required List<Map<String, String>> dataList,
+    required TextEditingController nombre,
+    required TextEditingController paterno,
+    required TextEditingController materno,
+    required TextEditingController ocupacion,
+    required TextEditingController cumple,
+    required String? parentesco,
+    required ValueChanged<String?> onParentescoChanged,
+    required int? Function() getSelectedIndex,
+    required void Function(int?) setSelectedIndex,
+    required void Function(int) onSelectRow,
+  }) {
+    return Card(
+      elevation: 4,
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            color: const Color.fromRGBO(8, 12, 36, 1),
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // formulario (2 filas + tabla)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // formulario (2 filas + tabla)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // fila 1: Nombre | A. Paterno | A. Materno | Cumpleaños
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildLabeledField("Nombre(s):", nombre),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _buildLabeledField("A. Paterno:", paterno),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _buildLabeledField("A. Materno:", materno),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _label("Cumpleaños (dd/Mes/yyyy):"),
+                                _cumpleTextFieldController(cumple),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      // fila 2: Ocupación | Parentesco
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildLabeledField("Ocupación:", ocupacion),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _label("Parentesco:"),
+                                _parentescoDropdown(
+                                  parentesco,
+                                  onParentescoChanged,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      // tabla colocada debajo del formulario
+                      _buildTable(
+                        dataList: dataList,
+                        selectedIndex: getSelectedIndex(),
+                        onSelect: (index) {
+                          setSelectedIndex(index);
+                          onSelectRow(index);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 20),
+                // botones
+                Column(
                   children: [
-                    // fila 1: Nombre | A. Paterno | A. Materno | Cumpleaños
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildLabeledField("Nombre(s):", nombre),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: _buildLabeledField("A. Paterno:", paterno),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: _buildLabeledField("A. Materno:", materno),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _label("Cumpleaños (dd/Mes/yyyy):"),
-                              _cumpleTextFieldController(cumple),
-                            ],
-                          ),
-                        ),
-                      ],
+                    _button(
+                      "Nuevo",
+                      Colors.green,
+                      () => _agregarRegistro(
+                        list: dataList,
+                        nombre: nombre,
+                        paterno: paterno,
+                        materno: materno,
+                        ocupacion: ocupacion,
+                        cumple: cumple,
+                        parentesco: parentesco,
+                        resetParentesco: onParentescoChanged,
+                      ),
                     ),
-                    const SizedBox(height: 10),
-                    // fila 2: Ocupación | Parentesco
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildLabeledField("Ocupación:", ocupacion),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _label("Parentesco:"),
-                              _parentescoDropdown(
-                                parentesco,
-                                onParentescoChanged,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 8),
+                    _button(
+                      "Limpiar",
+                      Colors.orange,
+                      () => _limpiarCampos(
+                        nombre: nombre,
+                        paterno: paterno,
+                        materno: materno,
+                        ocupacion: ocupacion,
+                        cumple: cumple,
+                        resetParentesco: onParentescoChanged,
+                        clearSelection: () => setSelectedIndex(null),
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    // tabla colocada debajo del formulario
-                    _buildTable(
-                      dataList: dataList,
-                      selectedIndex: getSelectedIndex(),
-                      onSelect: (index) {
-                        setSelectedIndex(index);
-                        onSelectRow(index);
-                      },
+                    const SizedBox(height: 8),
+                    _button(
+                      "Modificar",
+                      Colors.blue,
+                      () => _modificarRegistro(
+                        list: dataList,
+                        nombre: nombre,
+                        paterno: paterno,
+                        materno: materno,
+                        ocupacion: ocupacion,
+                        cumple: cumple,
+                        parentesco: parentesco,
+                        getSelectedIndex: getSelectedIndex,
+                        resetParentesco: onParentescoChanged,
+                        clearSelection: () => setSelectedIndex(null),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _button(
+                      "Borrar",
+                      Colors.red,
+                      () => _borrarRegistro(
+                        list: dataList,
+                        getSelectedIndex: getSelectedIndex,
+                        clearSelection: () => setSelectedIndex(null),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 20),
-              // botones
-              Column(
-                children: [
-                  _button(
-                    "Nuevo",
-                    Colors.green,
-                    () => _agregarRegistro(
-                      list: dataList,
-                      nombre: nombre,
-                      paterno: paterno,
-                      materno: materno,
-                      ocupacion: ocupacion,
-                      cumple: cumple,
-                      parentesco: parentesco,
-                      resetParentesco: onParentescoChanged,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _button(
-                    "Limpiar",
-                    Colors.orange,
-                    () => _limpiarCampos(
-                      nombre: nombre,
-                      paterno: paterno,
-                      materno: materno,
-                      ocupacion: ocupacion,
-                      cumple: cumple,
-                      resetParentesco: onParentescoChanged,
-                      clearSelection: () => setSelectedIndex(null),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _button(
-                    "Modificar",
-                    Colors.blue,
-                    () => _modificarRegistro(
-                      list: dataList,
-                      nombre: nombre,
-                      paterno: paterno,
-                      materno: materno,
-                      ocupacion: ocupacion,
-                      cumple: cumple,
-                      parentesco: parentesco,
-                      getSelectedIndex: getSelectedIndex,
-                      resetParentesco: onParentescoChanged,
-                      clearSelection: () => setSelectedIndex(null),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _button(
-                    "Borrar",
-                    Colors.red,
-                    () => _borrarRegistro(
-                      list: dataList,
-                      getSelectedIndex: getSelectedIndex,
-                      clearSelection: () => setSelectedIndex(null),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
+        ],
+      ),
+    );
+  }
 
   Widget _buildLabeledField(String label, TextEditingController controller) {
     return Column(
@@ -546,68 +533,73 @@ class _DatosGeneralesState extends State<DatosGenerales> {
   }
 
   Widget _buildTable({
-  required List<Map<String, String>> dataList,
-  required int? selectedIndex,
-  required void Function(int) onSelect,
-}) {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(8),
-      border: Border.all(color: const Color.fromRGBO(8, 12, 36, 1), width: 1.5),
-    ),
-    child: DataTable(
-      headingRowColor: WidgetStateProperty.all(
-        const Color.fromRGBO(8, 12, 36, 1),
-      ),
-      headingTextStyle: const TextStyle(
+    required List<Map<String, String>> dataList,
+    required int? selectedIndex,
+    required void Function(int) onSelect,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
         color: Colors.white,
-        fontWeight: FontWeight.bold,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: const Color.fromRGBO(8, 12, 36, 1),
+          width: 1.5,
+        ),
       ),
-      dataRowColor: WidgetStateProperty.resolveWith<Color?>(
-        (states) {
+      child: DataTable(
+        headingRowColor: WidgetStateProperty.all(
+          const Color.fromRGBO(8, 12, 36, 1),
+        ),
+        headingTextStyle: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+        dataRowColor: WidgetStateProperty.resolveWith<Color?>((states) {
           if (states.contains(WidgetState.selected)) {
-            return const Color.fromRGBO(14, 30, 197, 0.2); // azul claro al seleccionar
+            return const Color.fromRGBO(
+              14,
+              30,
+              197,
+              0.2,
+            ); // azul claro al seleccionar
           }
           return Colors.white; // color normal
-        },
+        }),
+        columns: const [
+          DataColumn(label: Text("Nombre")),
+          DataColumn(label: Text("A. Paterno")),
+          DataColumn(label: Text("A. Materno")),
+          DataColumn(label: Text("Cumpleaños")),
+          DataColumn(label: Text("Ocupación")),
+          DataColumn(label: Text("Parentesco")),
+        ],
+        rows: List.generate(dataList.length, (index) {
+          final item = dataList[index];
+          final isSelected = index == selectedIndex;
+
+          return DataRow(
+            selected: isSelected,
+            onSelectChanged: (_) => onSelect(index),
+            color: WidgetStateProperty.resolveWith<Color?>(
+              (states) => isSelected
+                  ? const Color.fromRGBO(14, 30, 197, 0.15)
+                  : (index % 2 == 0
+                        ? Colors.grey.shade100
+                        : Colors.grey.shade200),
+            ),
+            cells: [
+              DataCell(Text(item["nombre"] ?? "")),
+              DataCell(Text(item["paterno"] ?? "")),
+              DataCell(Text(item["materno"] ?? "")),
+              DataCell(Text(item["cumple"] ?? "")),
+              DataCell(Text(item["ocupacion"] ?? "")),
+              DataCell(Text(item["parentesco"] ?? "")),
+            ],
+          );
+        }),
       ),
-      columns: const [
-        DataColumn(label: Text("Nombre")),
-        DataColumn(label: Text("A. Paterno")),
-        DataColumn(label: Text("A. Materno")),
-        DataColumn(label: Text("Cumpleaños")),
-        DataColumn(label: Text("Ocupación")),
-        DataColumn(label: Text("Parentesco")),
-      ],
-      rows: List.generate(dataList.length, (index) {
-        final item = dataList[index];
-        final isSelected = index == selectedIndex;
-
-        return DataRow(
-          selected: isSelected,
-          onSelectChanged: (_) => onSelect(index),
-          color: WidgetStateProperty.resolveWith<Color?>(
-            (states) => isSelected
-                ? const Color.fromRGBO(14, 30, 197, 0.15)
-                : (index % 2 == 0
-                    ? Colors.grey.shade100
-                    : Colors.grey.shade200),
-          ),
-          cells: [
-            DataCell(Text(item["nombre"] ?? "")),
-            DataCell(Text(item["paterno"] ?? "")),
-            DataCell(Text(item["materno"] ?? "")),
-            DataCell(Text(item["cumple"] ?? "")),
-            DataCell(Text(item["ocupacion"] ?? "")),
-            DataCell(Text(item["parentesco"] ?? "")),
-          ],
-        );
-      }),
-    ),
-  );
-}
-
+    );
+  }
 
   // ---------- CRUD helpers para sección genérica ----------
   void _agregarRegistro({
