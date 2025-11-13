@@ -22,7 +22,7 @@ class _MainTabViewState extends State<MainTabView> {
 
     _pages = [
       DatosGenerales(datosContrato: widget.datosContrato),
-      const PlaceholderView(title: 'Condiciones'),
+      const PlaceholderView(title: 'Condiciones de Venta'),
       const PlaceholderView(title: 'Financiamiento'),
       const PlaceholderView(title: 'Otros'),
     ];
@@ -49,10 +49,10 @@ class _MainTabViewState extends State<MainTabView> {
           unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Datos'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Datos Generales'),
             BottomNavigationBarItem(
               icon: Icon(Icons.description),
-              label: 'Condiciones',
+              label: 'Condiciones de Venta',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.attach_money),
