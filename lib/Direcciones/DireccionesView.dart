@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// --- ENUMS para control de estado ---
+//ENUMS para control de estado
 enum PaisSeleccionado { mexico, usa, canada, otro }
 
 enum FormatoDirUSA { standard, poBox, cmr }
@@ -47,7 +47,6 @@ class _VistaDireccionEmailState extends State<VistaDireccionEmail> {
 
   @override
   Widget build(BuildContext context) {
-    // Diseño adaptable: si es pantalla pequeña, apila las columnas.
     bool isWide = MediaQuery.of(context).size.width > 900;
 
     return isWide
@@ -103,11 +102,6 @@ class _VistaDireccionEmailState extends State<VistaDireccionEmail> {
                 SizedBox(height: 6),
                 Row(
                   children: [
-                    ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.search, size: 14),
-                      label: Text("En Sistema"),
-                    ),
                     SizedBox(width: 8),
                     ElevatedButton(onPressed: () {}, child: Text("Aceptar")),
                     SizedBox(width: 8),
@@ -302,6 +296,7 @@ class _VistaDireccionEmailState extends State<VistaDireccionEmail> {
                 "Oficina 2",
                 "Celular 1",
                 "Celular 2",
+                "Mensajes",
               ])
                 Row(
                   children: [
@@ -349,6 +344,10 @@ class _VistaDireccionEmailState extends State<VistaDireccionEmail> {
               SizedBox(height: 8),
               Text("Email 2"),
               TextFormField(enabled: !_noTieneEmail),
+              Text("Email 3"),
+              TextFormField(enabled: !_noTieneEmail),
+              Text("Email 4"),
+              TextFormField(enabled: !_noTieneEmail),
               CheckboxListTile(
                 title: Text("No Tiene Correo Electrónico"),
                 value: _noTieneEmail,
@@ -379,7 +378,7 @@ class _VistaDireccionEmailState extends State<VistaDireccionEmail> {
           Text("Nacionalidad"),
           SizedBox(height: 4),
           DropdownButtonFormField(
-            value: "MEXICANA",
+            value: "Seleccione",
             items: [
               "MEXICANA",
               "AMERICANA",
@@ -387,6 +386,7 @@ class _VistaDireccionEmailState extends State<VistaDireccionEmail> {
               "ITALIANA",
               "PERUANA",
               "RUSO",
+              "Seleccione",
               "SIL",
               "VENEZOLANA",
               "OTRA",

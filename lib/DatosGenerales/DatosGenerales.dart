@@ -121,7 +121,7 @@ class _DatosGeneralesState extends State<DatosGenerales> {
           children: [
             _buildTitularesBeneficiariosTab(),
             DireccionesView(),
-            const Center(child: Text("Contenido de Datos Fiscales (RFC)")),
+            const Center(child: Text("Contenido de Datos Fiscales en desarrollo.")),
           ],
         ),
       ),
