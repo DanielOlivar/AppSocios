@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../ContratoData/ContratoData.dart';
 import '../DatosGenerales/DatosGenerales.dart';
+import '../CondicionesVenta/CondicionesVenta.dart';
 
 class MainTabView extends StatefulWidget {
   final ContratoData datosContrato;
@@ -22,7 +23,7 @@ class _MainTabViewState extends State<MainTabView> {
 
     _pages = [
       DatosGenerales(datosContrato: widget.datosContrato),
-      const PlaceholderView(title: 'Condiciones de Venta'),
+      CondicionesVenta(datosContrato: widget.datosContrato),
       const PlaceholderView(title: 'Financiamiento'),
       const PlaceholderView(title: 'Otros'),
     ];
