@@ -181,7 +181,7 @@ class InicioView extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: ListTile(   
+                child: ListTile(
                   leading: const Icon(
                     Icons.book_outlined,
                     color: Color.fromRGBO(18, 12, 36, 1),

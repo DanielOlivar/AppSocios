@@ -51,7 +51,10 @@ class _MainTabViewState extends State<MainTabView> {
           unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Datos Generales'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Datos Generales',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.description),
               label: 'Condiciones de Venta',
