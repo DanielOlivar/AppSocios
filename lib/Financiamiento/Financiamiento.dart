@@ -10,9 +10,9 @@ const Color kColorHeader = Color.fromRGBO(8, 12, 36, 1); // Azul oscuro
 const Color kColorBorder = Color(0xFF9E9E9E); // Gris bordes
 
 final TextStyle kLabelStyle = TextStyle(
-  color: kColorLabelRed, 
-  fontWeight: FontWeight.bold, 
-  fontSize: 11
+  color: kColorLabelRed,
+  fontWeight: FontWeight.bold,
+  fontSize: 11,
 );
 
 // ==========================================
@@ -40,25 +40,135 @@ class _FinanciamientoState extends State<Financiamiento> {
 
   // Datos Dummy para la tabla
   final List<Map<String, String>> _rows = [
-    {"no": "0", "fecha": "", "monto": "", "capital": "", "interes": "", "acum": "", "saldo": "\$359,677.50", "extra": ""},
-    {"no": "1", "fecha": "20/jul./2023", "monto": "\$7,642.08", "capital": "\$4,644.77", "interes": "\$2,997.31", "acum": "\$4,644.77", "saldo": "\$355,032.73", "extra": "\$0.00"},
-    {"no": "2", "fecha": "20/ago./2023", "monto": "\$7,642.08", "capital": "\$4,683.47", "interes": "\$2,958.61", "acum": "\$9,328.24", "saldo": "\$350,349.26", "extra": "\$0.00"},
-    {"no": "3", "fecha": "20/sep./2023", "monto": "\$7,642.08", "capital": "\$4,722.50", "interes": "\$2,919.58", "acum": "\$14,050.74", "saldo": "\$345,626.76", "extra": "\$0.00"},
-    {"no": "4", "fecha": "20/oct./2023", "monto": "\$7,642.08", "capital": "\$4,761.86", "interes": "\$2,880.22", "acum": "\$18,812.60", "saldo": "\$340,864.90", "extra": "\$0.00"},
-    {"no": "5", "fecha": "20/nov./2023", "monto": "\$7,642.08", "capital": "\$4,801.54", "interes": "\$2,840.54", "acum": "\$23,614.14", "saldo": "\$336,063.36", "extra": "\$0.00"},
-    {"no": "6", "fecha": "20/dic./2023", "monto": "\$7,642.08", "capital": "\$4,841.55", "interes": "\$2,800.53", "acum": "\$28,455.69", "saldo": "\$331,221.81", "extra": "\$0.00"},
-    {"no": "7", "fecha": "20/ene./2024", "monto": "\$7,642.08", "capital": "\$4,881.90", "interes": "\$2,760.18", "acum": "\$33,337.59", "saldo": "\$326,339.91", "extra": "\$0.00"},
-    {"no": "8", "fecha": "20/feb./2024", "monto": "\$7,642.08", "capital": "\$4,922.58", "interes": "\$2,719.50", "acum": "\$38,260.17", "saldo": "\$321,417.33", "extra": "\$0.00"},
-    {"no": "9", "fecha": "20/mar./2024", "monto": "\$7,642.08", "capital": "\$4,963.60", "interes": "\$2,678.48", "acum": "\$43,223.77", "saldo": "\$316,453.73", "extra": "\$0.00"},
-    {"no": "10", "fecha": "20/abr./2024", "monto": "\$7,642.08", "capital": "\$5,004.97", "interes": "\$2,637.11", "acum": "\$48,228.74", "saldo": "\$311,448.76", "extra": "\$0.00"},
-    {"no": "11", "fecha": "20/may./2024", "monto": "\$7,642.08", "capital": "\$5,046.67", "interes": "\$2,595.41", "acum": "\$53,275.41", "saldo": "\$306,402.09", "extra": "\$0.00"},
+    {
+      "no": "0",
+      "fecha": "",
+      "monto": "",
+      "capital": "",
+      "interes": "",
+      "acum": "",
+      "saldo": "\$359,677.50",
+      "extra": "",
+    },
+    {
+      "no": "1",
+      "fecha": "20/jul./2023",
+      "monto": "\$7,642.08",
+      "capital": "\$4,644.77",
+      "interes": "\$2,997.31",
+      "acum": "\$4,644.77",
+      "saldo": "\$355,032.73",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "2",
+      "fecha": "20/ago./2023",
+      "monto": "\$7,642.08",
+      "capital": "\$4,683.47",
+      "interes": "\$2,958.61",
+      "acum": "\$9,328.24",
+      "saldo": "\$350,349.26",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "3",
+      "fecha": "20/sep./2023",
+      "monto": "\$7,642.08",
+      "capital": "\$4,722.50",
+      "interes": "\$2,919.58",
+      "acum": "\$14,050.74",
+      "saldo": "\$345,626.76",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "4",
+      "fecha": "20/oct./2023",
+      "monto": "\$7,642.08",
+      "capital": "\$4,761.86",
+      "interes": "\$2,880.22",
+      "acum": "\$18,812.60",
+      "saldo": "\$340,864.90",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "5",
+      "fecha": "20/nov./2023",
+      "monto": "\$7,642.08",
+      "capital": "\$4,801.54",
+      "interes": "\$2,840.54",
+      "acum": "\$23,614.14",
+      "saldo": "\$336,063.36",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "6",
+      "fecha": "20/dic./2023",
+      "monto": "\$7,642.08",
+      "capital": "\$4,841.55",
+      "interes": "\$2,800.53",
+      "acum": "\$28,455.69",
+      "saldo": "\$331,221.81",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "7",
+      "fecha": "20/ene./2024",
+      "monto": "\$7,642.08",
+      "capital": "\$4,881.90",
+      "interes": "\$2,760.18",
+      "acum": "\$33,337.59",
+      "saldo": "\$326,339.91",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "8",
+      "fecha": "20/feb./2024",
+      "monto": "\$7,642.08",
+      "capital": "\$4,922.58",
+      "interes": "\$2,719.50",
+      "acum": "\$38,260.17",
+      "saldo": "\$321,417.33",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "9",
+      "fecha": "20/mar./2024",
+      "monto": "\$7,642.08",
+      "capital": "\$4,963.60",
+      "interes": "\$2,678.48",
+      "acum": "\$43,223.77",
+      "saldo": "\$316,453.73",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "10",
+      "fecha": "20/abr./2024",
+      "monto": "\$7,642.08",
+      "capital": "\$5,004.97",
+      "interes": "\$2,637.11",
+      "acum": "\$48,228.74",
+      "saldo": "\$311,448.76",
+      "extra": "\$0.00",
+    },
+    {
+      "no": "11",
+      "fecha": "20/may./2024",
+      "monto": "\$7,642.08",
+      "capital": "\$5,046.67",
+      "interes": "\$2,595.41",
+      "acum": "\$53,275.41",
+      "saldo": "\$306,402.09",
+      "extra": "\$0.00",
+    },
   ];
 
   @override
   void dispose() {
-    _montoFinanciarCtrl.dispose(); _mensualidadFijaCtrl.dispose();
+    _montoFinanciarCtrl.dispose();
+    _mensualidadFijaCtrl.dispose();
     _numPagosCtrl.dispose();
-    _tasaInteresCtrl.dispose(); _fechaPrimerPagoCtrl.dispose();
+    _tasaInteresCtrl.dispose();
+    _fechaPrimerPagoCtrl.dispose();
     super.dispose();
   }
 
@@ -68,7 +178,14 @@ class _FinanciamientoState extends State<Financiamiento> {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: kColorHeader,
-        title: const Text("DATOS DEL FINANCIAMIENTO", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+        title: const Text(
+          "DATOS DEL FINANCIAMIENTO",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+        ),
         centerTitle: true,
         toolbarHeight: 40,
       ),
@@ -100,26 +217,52 @@ class _FinanciamientoState extends State<Financiamiento> {
                                 // Versión flotante
                                 const Align(
                                   alignment: Alignment.topCenter,
-                                  child: Text("ver 1.0.0.8.1", style: TextStyle(color: Colors.grey, fontSize: 10)),
+                                  child: Text(
+                                    "ver 1.0.0.8.1",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 10,
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(height: 5),
                                 // Fila 1
                                 Row(
                                   children: [
                                     _labelInput("Tipo de Periodo", width: 100),
-                                    Expanded(child: _compactDropdown(["Mensual", "Anual"], _tipoPeriodo, (v) => setState(()=>_tipoPeriodo=v!))),
-                                    const Spacer(), 
+                                    Expanded(
+                                      child: _compactDropdown(
+                                        ["Mensual", "Anual"],
+                                        _tipoPeriodo,
+                                        (v) =>
+                                            setState(() => _tipoPeriodo = v!),
+                                      ),
+                                    ),
+                                    const Spacer(),
                                   ],
                                 ),
                                 const SizedBox(height: 8),
                                 // Fila 2
                                 Row(
                                   children: [
-                                    _labelInput("Monto a Financiar", width: 100),
-                                    Expanded(child: _compactInput(_montoFinanciarCtrl, alignRight: true)),
+                                    _labelInput(
+                                      "Monto a Financiar",
+                                      width: 100,
+                                    ),
+                                    Expanded(
+                                      child: _compactInput(
+                                        _montoFinanciarCtrl,
+                                        alignRight: true,
+                                      ),
+                                    ),
                                     const SizedBox(width: 15),
                                     _labelInput("Mensualidad Fija", width: 90),
-                                    Expanded(child: _compactInput(_mensualidadFijaCtrl, alignRight: true)),
+                                    Expanded(
+                                      child: _compactInput(
+                                        _mensualidadFijaCtrl,
+                                        alignRight: true,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 8),
@@ -127,10 +270,17 @@ class _FinanciamientoState extends State<Financiamiento> {
                                 Row(
                                   children: [
                                     _labelInput("Número de Pagos", width: 100),
-                                    Expanded(child: _compactInput(_numPagosCtrl, alignRight: true)),
+                                    Expanded(
+                                      child: _compactInput(
+                                        _numPagosCtrl,
+                                        alignRight: true,
+                                      ),
+                                    ),
                                     const SizedBox(width: 15),
                                     _labelInput("Fecha Pago Adic.", width: 90),
-                                    Expanded(child: _compactDropdown([], null, (v){})), 
+                                    Expanded(
+                                      child: _compactDropdown([], null, (v) {}),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 8),
@@ -138,7 +288,13 @@ class _FinanciamientoState extends State<Financiamiento> {
                                 Row(
                                   children: [
                                     _labelInput("Tasa de Interés", width: 100),
-                                    SizedBox(width: 60, child: _compactInput(_tasaInteresCtrl, alignRight: true)),
+                                    SizedBox(
+                                      width: 60,
+                                      child: _compactInput(
+                                        _tasaInteresCtrl,
+                                        alignRight: true,
+                                      ),
+                                    ),
                                     const SizedBox(width: 5),
                                     Text("%", style: kLabelStyle),
                                   ],
@@ -147,10 +303,16 @@ class _FinanciamientoState extends State<Financiamiento> {
                                 // Fila 5
                                 Row(
                                   children: [
-                                    _labelInput("Fecha primer pago", width: 100),
+                                    _labelInput(
+                                      "Fecha primer pago",
+                                      width: 100,
+                                    ),
                                     Expanded(
                                       flex: 2,
-                                      child: _compactInput(_fechaPrimerPagoCtrl, isDate: true)
+                                      child: _compactInput(
+                                        _fechaPrimerPagoCtrl,
+                                        isDate: true,
+                                      ),
                                     ),
                                     const Spacer(flex: 3),
                                   ],
@@ -159,17 +321,27 @@ class _FinanciamientoState extends State<Financiamiento> {
                             ),
                           ),
                           Positioned(
-                            left: 10, top: 0,
+                            left: 10,
+                            top: 0,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                              ),
                               color: Colors.grey[100],
-                              child: const Text("Datos Generales", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 11)),
+                              child: const Text(
+                                "Datos Generales",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    
+
                     // DERECHA: Resumen de pagos
                     Expanded(
                       flex: 3,
@@ -183,7 +355,8 @@ class _FinanciamientoState extends State<Financiamiento> {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             width: double.infinity,
-                            height: 220, // Ajustado para coincidir con la izquierda
+                            height:
+                                220, // Ajustado para coincidir con la izquierda
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -194,11 +367,17 @@ class _FinanciamientoState extends State<Financiamiento> {
                             ),
                           ),
                           Positioned(
-                            left: 10, top: 0,
+                            left: 10,
+                            top: 0,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                              ),
                               color: Colors.grey[100], // Match fondo
-                              child: Text("Resumen de pagos", style: kLabelStyle),
+                              child: Text(
+                                "Resumen de pagos",
+                                style: kLabelStyle,
+                              ),
                             ),
                           ),
                         ],
@@ -207,7 +386,7 @@ class _FinanciamientoState extends State<Financiamiento> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 10),
 
               // HEADER TABLA
@@ -218,7 +397,11 @@ class _FinanciamientoState extends State<Financiamiento> {
                 child: const Text(
                   "TABLA DE AMORTIZACION CALCULADA",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
                 ),
               ),
 
@@ -259,21 +442,54 @@ class _FinanciamientoState extends State<Financiamiento> {
                               child: SingleChildScrollView(
                                 child: Column(
                                   children: _rows.map((row) {
-                                    final bool isEven = int.parse(row["no"]!) % 2 == 0;
-                                    final bool isRedDate = row["no"] != "0"; 
+                                    final bool isEven =
+                                        int.parse(row["no"]!) % 2 == 0;
+                                    final bool isRedDate = row["no"] != "0";
                                     return Container(
                                       height: 20,
-                                      color: isEven ? Colors.grey[100] : Colors.white,
+                                      color: isEven
+                                          ? Colors.grey[100]
+                                          : Colors.white,
                                       child: Row(
                                         children: [
                                           _td(row["no"]!, 30, alignRight: true),
-                                          _td(row["fecha"]!, 80, color: isRedDate ? const Color(0xFFA00000) : Colors.black),
-                                          _td(row["monto"]!, 70, alignRight: true),
-                                          _td(row["capital"]!, 70, alignRight: true),
-                                          _td(row["interes"]!, 70, alignRight: true),
-                                          _td(row["acum"]!, 110, alignRight: true),
-                                          _td(row["saldo"]!, 80, alignRight: true),
-                                          _td(row["extra"]!, 110, alignRight: true),
+                                          _td(
+                                            row["fecha"]!,
+                                            80,
+                                            color: isRedDate
+                                                ? const Color(0xFFA00000)
+                                                : Colors.black,
+                                          ),
+                                          _td(
+                                            row["monto"]!,
+                                            70,
+                                            alignRight: true,
+                                          ),
+                                          _td(
+                                            row["capital"]!,
+                                            70,
+                                            alignRight: true,
+                                          ),
+                                          _td(
+                                            row["interes"]!,
+                                            70,
+                                            alignRight: true,
+                                          ),
+                                          _td(
+                                            row["acum"]!,
+                                            110,
+                                            alignRight: true,
+                                          ),
+                                          _td(
+                                            row["saldo"]!,
+                                            80,
+                                            alignRight: true,
+                                          ),
+                                          _td(
+                                            row["extra"]!,
+                                            110,
+                                            alignRight: true,
+                                          ),
                                         ],
                                       ),
                                     );
@@ -285,7 +501,7 @@ class _FinanciamientoState extends State<Financiamiento> {
                         ),
                       ),
                     ),
-                    
+
                     const SizedBox(width: 8),
 
                     // CONTROLES LATERALES
@@ -296,19 +512,31 @@ class _FinanciamientoState extends State<Financiamiento> {
                           const SizedBox(height: 20),
                           _bigButton("Calcular", Icons.flag),
                           const SizedBox(height: 40),
-                          
+
                           // Checkbox 1
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 24, width: 24,
-                                child: Checkbox(value: _mostrarTablaCompleta, onChanged: (v)=>setState(()=>_mostrarTablaCompleta=v!)),
+                                height: 24,
+                                width: 24,
+                                child: Checkbox(
+                                  value: _mostrarTablaCompleta,
+                                  onChanged: (v) => setState(
+                                    () => _mostrarTablaCompleta = v!,
+                                  ),
+                                ),
                               ),
                               const Expanded(
-                                child: Text("Mostrar tabla\namortizacion\ncompleta", 
-                                  style: TextStyle(color: kColorHeader, fontWeight: FontWeight.bold, fontSize: 11)),
-                              )
+                                child: Text(
+                                  "Mostrar tabla\namortizacion\ncompleta",
+                                  style: TextStyle(
+                                    color: kColorHeader,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -317,25 +545,37 @@ class _FinanciamientoState extends State<Financiamiento> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                height: 24, width: 24,
-                                child: Checkbox(value: _imprimirCapitalInteres, onChanged: (v)=>setState(()=>_imprimirCapitalInteres=v!)),
+                                height: 24,
+                                width: 24,
+                                child: Checkbox(
+                                  value: _imprimirCapitalInteres,
+                                  onChanged: (v) => setState(
+                                    () => _imprimirCapitalInteres = v!,
+                                  ),
+                                ),
                               ),
                               const Expanded(
-                                child: Text("Al imprimir\nContrato desea\nMostrar Capital /\nInteres", 
-                                  style: TextStyle(color: kColorHeader, fontWeight: FontWeight.bold, fontSize: 11)),
-                              )
+                                child: Text(
+                                  "Al imprimir\nContrato desea\nMostrar Capital /\nInteres",
+                                  style: TextStyle(
+                                    color: kColorHeader,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                          
+
                           const Spacer(),
                           _bigButton("Limpiar", Icons.cleaning_services),
                           const SizedBox(height: 20),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -354,7 +594,11 @@ class _FinanciamientoState extends State<Financiamiento> {
     );
   }
 
-  Widget _compactInput(TextEditingController ctrl, {bool alignRight = false, bool isDate = false}) {
+  Widget _compactInput(
+    TextEditingController ctrl, {
+    bool alignRight = false,
+    bool isDate = false,
+  }) {
     return SizedBox(
       height: 22,
       child: TextField(
@@ -362,19 +606,34 @@ class _FinanciamientoState extends State<Financiamiento> {
         textAlign: alignRight ? TextAlign.right : TextAlign.left,
         style: const TextStyle(fontSize: 11, color: Colors.black),
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 4,
+            vertical: 0,
+          ),
           fillColor: kColorInputBg,
           filled: true,
           // Icono de calendario si es fecha, simulado a la derecha
-          suffixIcon: isDate ? const Icon(Icons.arrow_drop_down, size: 16, color: Colors.black) : null,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(2), borderSide: const BorderSide(color: Colors.grey, width: 0.5)),
-          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(2), borderSide: const BorderSide(color: Colors.grey, width: 0.5)),
+          suffixIcon: isDate
+              ? const Icon(Icons.arrow_drop_down, size: 16, color: Colors.black)
+              : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(2),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(2),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
         ),
       ),
     );
   }
 
-  Widget _compactDropdown(List<String> items, String? value, Function(String?) onChanged) {
+  Widget _compactDropdown(
+    List<String> items,
+    String? value,
+    Function(String?) onChanged,
+  ) {
     return SizedBox(
       height: 22,
       child: DropdownButtonFormField<String>(
@@ -382,13 +641,29 @@ class _FinanciamientoState extends State<Financiamiento> {
         isExpanded: true,
         icon: const Icon(Icons.arrow_drop_down, size: 16, color: Colors.black),
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 4,
+            vertical: 0,
+          ),
           fillColor: kColorInputBg,
           filled: true,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(2), borderSide: const BorderSide(color: Colors.grey, width: 0.5)),
-          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(2), borderSide: const BorderSide(color: Colors.grey, width: 0.5)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(2),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(2),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
         ),
-        items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(fontSize: 11)))).toList(),
+        items: items
+            .map(
+              (e) => DropdownMenuItem(
+                value: e,
+                child: Text(e, style: const TextStyle(fontSize: 11)),
+              ),
+            )
+            .toList(),
         onChanged: onChanged,
       ),
     );
@@ -399,11 +674,28 @@ class _FinanciamientoState extends State<Financiamiento> {
       padding: const EdgeInsets.only(bottom: 2.0),
       child: Row(
         children: [
-          SizedBox(width: 20, child: Text(count, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11), textAlign: TextAlign.right)),
+          SizedBox(
+            width: 20,
+            child: Text(
+              count,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              textAlign: TextAlign.right,
+            ),
+          ),
           const SizedBox(width: 5),
-          Text(text, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+          Text(
+            text,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
           const Spacer(),
-          Text(amount, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: kColorHeader)),
+          Text(
+            amount,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 11,
+              color: kColorHeader,
+            ),
+          ),
         ],
       ),
     );
@@ -417,20 +709,41 @@ class _FinanciamientoState extends State<Financiamiento> {
       decoration: const BoxDecoration(
         border: Border(right: BorderSide(color: Colors.white, width: 0.5)),
       ),
-      child: Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10)),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 10,
+        ),
+      ),
     );
   }
 
   // Table Data Cell
-  Widget _td(String text, double width, {bool alignRight = false, Color color = Colors.black}) {
+  Widget _td(
+    String text,
+    double width, {
+    bool alignRight = false,
+    Color color = Colors.black,
+  }) {
     return Container(
       width: width,
       padding: const EdgeInsets.symmetric(horizontal: 4),
       alignment: alignRight ? Alignment.centerRight : Alignment.centerLeft,
       decoration: BoxDecoration(
-        border: Border(right: BorderSide(color: Colors.grey.shade300, width: 0.5)),
+        border: Border(
+          right: BorderSide(color: Colors.grey.shade300, width: 0.5),
+        ),
       ),
-      child: Text(text, style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.w500)),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          fontSize: 10,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 
@@ -446,7 +759,13 @@ class _FinanciamientoState extends State<Financiamiento> {
         ),
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(4),
-        boxShadow: [const BoxShadow(color: Colors.black12, offset: Offset(1, 1), blurRadius: 1)]
+        boxShadow: [
+          const BoxShadow(
+            color: Colors.black12,
+            offset: Offset(1, 1),
+            blurRadius: 1,
+          ),
+        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -455,9 +774,16 @@ class _FinanciamientoState extends State<Financiamiento> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 18, color: Colors.orange.shade800), 
+              Icon(icon, size: 18, color: Colors.orange.shade800),
               const SizedBox(width: 8),
-              Text(text, style: TextStyle(color: Colors.grey.shade800, fontWeight: FontWeight.bold, fontSize: 12)),
+              Text(
+                text,
+                style: TextStyle(
+                  color: Colors.grey.shade800,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
             ],
           ),
         ),
