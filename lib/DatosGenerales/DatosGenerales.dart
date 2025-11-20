@@ -4,6 +4,28 @@ import '../ContratoData/ContratoData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Direcciones/DireccionesView.dart';
 
+// ==========================================
+// ESTILOS VISUALES
+// ==========================================
+const Color kColorLabelRed = Color(0xFFA00000);
+const Color kColorInputBg = Color(0xFFF5F0FA);
+const Color kColorHeader = Color.fromRGBO(8, 12, 36, 1);
+
+final TextStyle kLabelStyle = TextStyle(
+  color: kColorLabelRed,
+  fontWeight: FontWeight.bold,
+  fontSize: 12,
+);
+
+final TextStyle kHintSmallStyle = TextStyle(
+  color: kColorLabelRed,
+  fontWeight: FontWeight.bold,
+  fontSize: 10,
+);
+
+// ==========================================
+// WIDGET PRINCIPAL
+// ==========================================
 class DatosGenerales extends StatefulWidget {
   final ContratoData datosContrato;
 
@@ -16,33 +38,34 @@ class DatosGenerales extends StatefulWidget {
 Future<void> _logout(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.clear();
-  Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  if (context.mounted) {
+    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  }
 }
 
 class _DatosGeneralesState extends State<DatosGenerales> {
-  // === CONTROLADORES TITULARES ===
+  // CONTROLADORES
   final TextEditingController _nombreTitular = TextEditingController();
   final TextEditingController _paternoTitular = TextEditingController();
   final TextEditingController _maternoTitular = TextEditingController();
   final TextEditingController _ocupacionTitular = TextEditingController();
   final TextEditingController _cumpleTitular = TextEditingController();
   String? _parentescoTitular;
-  int? _selectedIndexTitular;
+  // CAMBIO: Usamos Set para selección múltiple
+  final Set<int> _selectedTitulares = {};
 
-  // === CONTROLADORES BENEFICIARIOS ===
   final TextEditingController _nombreBenef = TextEditingController();
   final TextEditingController _paternoBenef = TextEditingController();
   final TextEditingController _maternoBenef = TextEditingController();
   final TextEditingController _ocupacionBenef = TextEditingController();
   final TextEditingController _cumpleBenef = TextEditingController();
   String? _parentescoBenef;
-  int? _selectedIndexBenef;
+  // CAMBIO: Usamos Set para selección múltiple
+  final Set<int> _selectedBeneficiarios = {};
 
-  // === LISTAS ===
   final List<Map<String, String>> _titulares = [];
   final List<Map<String, String>> _beneficiarios = [];
 
-  // meses válidos (abreviados en español)
   final List<String> _mesesValidos = [
     "Ene",
     "Feb",
@@ -63,8 +86,9 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(8, 12, 36, 1),
+          backgroundColor: kColorHeader,
           title: const Text(
             "Cotización de Venta",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -103,9 +127,7 @@ class _DatosGeneralesState extends State<DatosGenerales> {
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.grey,
                   labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                  unselectedLabelStyle: TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
+                  indicatorColor: Colors.white,
                   tabs: [
                     Tab(text: "TITULARES / BENEFICIARIOS"),
                     Tab(text: "DIRECCIÓN / TELÉFONOS / E-MAIL"),
@@ -116,12 +138,13 @@ class _DatosGeneralesState extends State<DatosGenerales> {
             ),
           ),
         ),
-
         body: TabBarView(
           children: [
             _buildTitularesBeneficiariosTab(),
             DireccionesView(),
-            const Center(child: Text("Contenido de Datos Fiscales en desarrollo.")),
+            const Center(
+              child: Text("Contenido de Datos Fiscales en desarrollo."),
+            ),
           ],
         ),
       ),
@@ -130,13 +153,13 @@ class _DatosGeneralesState extends State<DatosGenerales> {
 
   Widget _buildTitularesBeneficiariosTab() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          // Sección Titulares (pasa controladores y funciones específicas)
           _buildSection(
             title: "TITULARES",
             dataList: _titulares,
+            selectedIndexes: _selectedTitulares,
             nombre: _nombreTitular,
             paterno: _paternoTitular,
             materno: _maternoTitular,
@@ -144,24 +167,35 @@ class _DatosGeneralesState extends State<DatosGenerales> {
             cumple: _cumpleTitular,
             parentesco: _parentescoTitular,
             onParentescoChanged: (v) => setState(() => _parentescoTitular = v),
-            getSelectedIndex: () => _selectedIndexTitular,
-            setSelectedIndex: (i) => setState(() => _selectedIndexTitular = i),
-            onSelectRow: (index) => _selectRow(
-              list: _titulares,
-              index: index,
-              nombre: _nombreTitular,
-              paterno: _paternoTitular,
-              materno: _maternoTitular,
-              ocupacion: _ocupacionTitular,
-              cumple: _cumpleTitular,
-              setParentesco: (v) => setState(() => _parentescoTitular = v),
+            onSelectRow: (index, selected) => _handleRowSelection(
+              _titulares,
+              _selectedTitulares,
+              index,
+              selected,
+              _nombreTitular,
+              _paternoTitular,
+              _maternoTitular,
+              _ocupacionTitular,
+              _cumpleTitular,
+              (v) => setState(() => _parentescoTitular = v),
+            ),
+            onSelectAll: (val) => _handleSelectAll(
+              _titulares,
+              _selectedTitulares,
+              val,
+              _nombreTitular,
+              _paternoTitular,
+              _maternoTitular,
+              _ocupacionTitular,
+              _cumpleTitular,
+              (v) => setState(() => _parentescoTitular = v),
             ),
           ),
-          const SizedBox(height: 24),
-          // Sección Beneficiarios
+          const SizedBox(height: 16),
           _buildSection(
             title: "BENEFICIARIOS",
             dataList: _beneficiarios,
+            selectedIndexes: _selectedBeneficiarios,
             nombre: _nombreBenef,
             paterno: _paternoBenef,
             materno: _maternoBenef,
@@ -169,17 +203,28 @@ class _DatosGeneralesState extends State<DatosGenerales> {
             cumple: _cumpleBenef,
             parentesco: _parentescoBenef,
             onParentescoChanged: (v) => setState(() => _parentescoBenef = v),
-            getSelectedIndex: () => _selectedIndexBenef,
-            setSelectedIndex: (i) => setState(() => _selectedIndexBenef = i),
-            onSelectRow: (index) => _selectRow(
-              list: _beneficiarios,
-              index: index,
-              nombre: _nombreBenef,
-              paterno: _paternoBenef,
-              materno: _maternoBenef,
-              ocupacion: _ocupacionBenef,
-              cumple: _cumpleBenef,
-              setParentesco: (v) => setState(() => _parentescoBenef = v),
+            onSelectRow: (index, selected) => _handleRowSelection(
+              _beneficiarios,
+              _selectedBeneficiarios,
+              index,
+              selected,
+              _nombreBenef,
+              _paternoBenef,
+              _maternoBenef,
+              _ocupacionBenef,
+              _cumpleBenef,
+              (v) => setState(() => _parentescoBenef = v),
+            ),
+            onSelectAll: (val) => _handleSelectAll(
+              _beneficiarios,
+              _selectedBeneficiarios,
+              val,
+              _nombreBenef,
+              _paternoBenef,
+              _maternoBenef,
+              _ocupacionBenef,
+              _cumpleBenef,
+              (v) => setState(() => _parentescoBenef = v),
             ),
           ),
         ],
@@ -190,6 +235,7 @@ class _DatosGeneralesState extends State<DatosGenerales> {
   Widget _buildSection({
     required String title,
     required List<Map<String, String>> dataList,
+    required Set<int> selectedIndexes, // Ahora recibe un Set
     required TextEditingController nombre,
     required TextEditingController paterno,
     required TextEditingController materno,
@@ -197,24 +243,24 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     required TextEditingController cumple,
     required String? parentesco,
     required ValueChanged<String?> onParentescoChanged,
-    required int? Function() getSelectedIndex,
-    required void Function(int?) setSelectedIndex,
-    required void Function(int) onSelectRow,
+    required Function(int, bool?) onSelectRow,
+    required Function(bool?) onSelectAll,
   }) {
     return Card(
-      elevation: 4,
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
           Container(
             width: double.infinity,
-            color: const Color.fromRGBO(8, 12, 36, 1),
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            color: kColorHeader,
             child: Text(
               title,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -224,77 +270,88 @@ class _DatosGeneralesState extends State<DatosGenerales> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // formulario (2 filas + tabla)
                 Expanded(
+                  flex: 7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // fila 1: Nombre | A. Paterno | A. Materno | Cumpleaños
+                      // FILA 1
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: _buildLabeledField("Nombre(s):", nombre),
+                          SizedBox(
+                            width: 60,
+                            child: Text("Nombre:", style: kLabelStyle),
                           ),
+                          Expanded(child: _purpleTextField(nombre)),
+                          const SizedBox(width: 4),
+                          Expanded(child: _purpleTextField(paterno)),
+                          const SizedBox(width: 4),
+                          Expanded(child: _purpleTextField(materno)),
                           const SizedBox(width: 10),
-                          Expanded(
-                            child: _buildLabeledField("A. Paterno:", paterno),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: _buildLabeledField("A. Materno:", materno),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _label("Cumpleaños (dd/Mes/yyyy):"),
-                                _cumpleTextFieldController(cumple),
-                              ],
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text("ddmmyy", style: kHintSmallStyle),
+                              Row(
+                                children: [
+                                  Text("Cumpleaños: ", style: kLabelStyle),
+                                  SizedBox(
+                                    width: 130,
+                                    child: _purpleTextField(
+                                      cumple,
+                                      isDate: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      // fila 2: Ocupación | Parentesco
+                      const SizedBox(height: 8),
+
+                      // FILA 2
                       Row(
                         children: [
-                          Expanded(
-                            child: _buildLabeledField("Ocupación:", ocupacion),
+                          SizedBox(
+                            width: 70,
+                            child: Text("Ocupacion:", style: kLabelStyle),
                           ),
-                          const SizedBox(width: 10),
+                          Expanded(flex: 1, child: _purpleTextField(ocupacion)),
+                          const SizedBox(width: 15),
+                          Text("Parentesco", style: kLabelStyle),
+                          const SizedBox(width: 5),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _label("Parentesco:"),
-                                _parentescoDropdown(
-                                  parentesco,
-                                  onParentescoChanged,
-                                ),
-                              ],
+                            flex: 1,
+                            child: _purpleDropdown(
+                              parentesco,
+                              onParentescoChanged,
                             ),
                           ),
+                          const Spacer(flex: 1),
+                          const SizedBox(width: 210),
                         ],
                       ),
                       const SizedBox(height: 16),
-                      // tabla colocada debajo del formulario
+
+                      // TABLA CON CHECKBOXES
                       _buildTable(
                         dataList: dataList,
-                        selectedIndex: getSelectedIndex(),
-                        onSelect: (index) {
-                          setSelectedIndex(index);
-                          onSelectRow(index);
-                        },
+                        selectedIndexes: selectedIndexes,
+                        onSelectRow: onSelectRow,
+                        onSelectAll: onSelectAll,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 20),
-                // botones
+
+                const SizedBox(width: 15),
+
+                // BOTONES DERECHA
                 Column(
                   children: [
-                    _button(
+                    _buttonCompacto(
                       "Nuevo",
                       Colors.green,
                       () => _agregarRegistro(
@@ -306,24 +363,25 @@ class _DatosGeneralesState extends State<DatosGenerales> {
                         cumple: cumple,
                         parentesco: parentesco,
                         resetParentesco: onParentescoChanged,
+                        selectedIndexes: selectedIndexes,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _button(
+                    _buttonCompacto(
                       "Limpiar",
                       Colors.orange,
                       () => _limpiarCampos(
-                        nombre: nombre,
-                        paterno: paterno,
-                        materno: materno,
-                        ocupacion: ocupacion,
-                        cumple: cumple,
-                        resetParentesco: onParentescoChanged,
-                        clearSelection: () => setSelectedIndex(null),
+                        nombre,
+                        paterno,
+                        materno,
+                        ocupacion,
+                        cumple,
+                        onParentescoChanged,
+                        selectedIndexes,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _button(
+                    _buttonCompacto(
                       "Modificar",
                       Colors.blue,
                       () => _modificarRegistro(
@@ -334,19 +392,27 @@ class _DatosGeneralesState extends State<DatosGenerales> {
                         ocupacion: ocupacion,
                         cumple: cumple,
                         parentesco: parentesco,
-                        getSelectedIndex: getSelectedIndex,
+                        selectedIndexes: selectedIndexes,
                         resetParentesco: onParentescoChanged,
-                        clearSelection: () => setSelectedIndex(null),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _button(
+                    _buttonCompacto(
                       "Borrar",
                       Colors.red,
                       () => _borrarRegistro(
                         list: dataList,
-                        getSelectedIndex: getSelectedIndex,
-                        clearSelection: () => setSelectedIndex(null),
+                        selectedIndexes: selectedIndexes,
+                        // Al borrar, también limpiamos campos por si acaso
+                        limpiarCampos: () => _limpiarCampos(
+                          nombre,
+                          paterno,
+                          materno,
+                          ocupacion,
+                          cumple,
+                          onParentescoChanged,
+                          {},
+                        ),
                       ),
                     ),
                   ],
@@ -359,222 +425,144 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     );
   }
 
-  Widget _buildLabeledField(String label, TextEditingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _label(label),
-        TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            isDense: true,
-            contentPadding: EdgeInsets.all(10),
+  // ==========================================
+  // WIDGETS AUXILIARES
+  // ==========================================
+  Widget _purpleTextField(TextEditingController ctrl, {bool isDate = false}) {
+    return SizedBox(
+      height: 24,
+      child: TextField(
+        controller: ctrl,
+        style: const TextStyle(fontSize: 12, color: Colors.black),
+        keyboardType: isDate ? TextInputType.number : TextInputType.text,
+        inputFormatters: isDate
+            ? [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9A-Za-z/]+')),
+                LengthLimitingTextInputFormatter(11),
+              ]
+            : [],
+        onChanged: isDate ? (val) => _handleDateLogic(val, ctrl) : null,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 6,
+            vertical: 0,
+          ),
+          fillColor: kColorInputBg,
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: const BorderSide(color: Colors.blue, width: 1),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _label(String text) {
-    return Text(
-      text,
-      style: TextStyle(color: Colors.red[700], fontWeight: FontWeight.bold),
-    );
-  }
-
-  Widget _cumpleTextFieldController(TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      keyboardType: TextInputType.text,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        isDense: true,
-        hintText: "01/Ene/2000",
-        contentPadding: EdgeInsets.all(10),
       ),
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9A-Za-z/]+')),
-        LengthLimitingTextInputFormatter(11),
-      ],
-      onChanged: (value) {
-        // 1) Eliminamos todos los '/' para reconstruir ordenadamente
-        String raw = value.replaceAll('/', '');
-
-        // 2) Limitar raw a máximo 9 caracteres (2 dia + 3 mes + 4 año = 9)
-        if (raw.length > 9) raw = raw.substring(0, 9);
-
-        // 3) Construir el texto con los '/' en posiciones correctas
-        String formatted = '';
-        if (raw.length <= 2) {
-          // sólo día parcial o completo
-          formatted = raw;
-        } else if (raw.length <= 5) {
-          // día + mes parcial (mes hasta 3 letras)
-          formatted = raw.substring(0, 2) + '/' + raw.substring(2);
-        } else {
-          // día + mes (3) + año parcial o completo
-          formatted =
-              raw.substring(0, 2) +
-              '/' +
-              raw.substring(2, 5) +
-              '/' +
-              raw.substring(5);
-        }
-
-        // 4) Normalizar capitalización del mes cuando esté parcial o completo
-        final partes = formatted.split('/');
-        if (partes.length >= 2 && partes[1].isNotEmpty) {
-          final mesRaw = partes[1];
-          final mesNorm =
-              mesRaw[0].toUpperCase() +
-              (mesRaw.length > 1 ? mesRaw.substring(1).toLowerCase() : '');
-          if (partes.length == 3) {
-            // dd/Mes/yyyy (mes puede ser menor a 3 si user aún no lo completa)
-            formatted =
-                partes[0] +
-                '/' +
-                (mesNorm.padRight(3)).substring(0, partes[1].length) +
-                '/' +
-                partes[2];
-          } else {
-            // dd/Mes(parcial)
-            formatted =
-                partes[0] +
-                '/' +
-                (mesNorm.padRight(3)).substring(0, partes[1].length);
-          }
-        }
-
-        // 5) Actualizar controlador sólo si cambió para no crear loops
-        if (formatted != controller.text) {
-          controller.value = TextEditingValue(
-            text: formatted,
-            selection: TextSelection.collapsed(offset: formatted.length),
-          );
-        }
-
-        // 6) Validaciones sólo cuando la entrada está completa (11 chars)
-        if (formatted.length == 11) {
-          final p = formatted.split('/');
-          final dia = int.tryParse(p[0]);
-          final mes = p[1];
-          final anio = int.tryParse(p[2]);
-
-          final mesNorm = mes[0].toUpperCase() + mes.substring(1).toLowerCase();
-
-          String? error;
-          if (dia == null || dia < 1 || dia > 31) {
-            error = "Día inválido (01-31).";
-          } else if (!_mesesValidos.contains(mesNorm)) {
-            error = "Mes inválido. Use Ene, Feb, Mar, etc.";
-          } else if (anio == null ||
-              anio < 1900 ||
-              anio > DateTime.now().year) {
-            error = "Año inválido.";
-          } else {
-            final monthIndex = _mesesValidos.indexOf(mesNorm) + 1; // 1..12
-            final maxDia = _daysInMonth(monthIndex, anio);
-            if (dia > maxDia) {
-              error = "El mes $mesNorm tiene máximo $maxDia días.";
-            }
-          }
-
-          if (error != null) {
-            ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(error)));
-          } else {
-            ScaffoldMessenger.of(context).removeCurrentSnackBar();
-          }
-        }
-      },
     );
   }
 
-  int _daysInMonth(int month, int year) {
-    if (month == 2) {
-      final isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-      return isLeap ? 29 : 28;
-    }
-    const meses31 = {1, 3, 5, 7, 8, 10, 12};
-    return meses31.contains(month) ? 31 : 30;
-  }
-
-  Widget _parentescoDropdown(
-    String? selected,
-    ValueChanged<String?> onChanged,
-  ) {
-    return DropdownButtonFormField<String>(
-      value: selected,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      ),
-      hint: const Text("Seleccionar..."),
-      items: [
-        "Contacto",
-        "Cónyuge",
-        "Hermano(a)",
-        "Hijo(a)",
-        "Madre",
-        "Padre",
-        "Otro",
-      ].map((p) => DropdownMenuItem(value: p, child: Text(p))).toList(),
-      onChanged: onChanged,
-    );
-  }
-
-  Widget _button(String text, Color color, VoidCallback onPressed) {
+  Widget _purpleDropdown(String? selected, ValueChanged<String?> onChanged) {
     return SizedBox(
-      width: 110,
+      height: 24,
+      child: DropdownButtonFormField<String>(
+        value: selected,
+        isExpanded: true,
+        icon: const Icon(Icons.arrow_drop_down, size: 18, color: Colors.black),
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 6,
+            vertical: 0,
+          ),
+          fillColor: kColorInputBg,
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(0),
+            borderSide: const BorderSide(color: Colors.grey, width: 0.5),
+          ),
+        ),
+        items:
+            [
+                  "Contacto",
+                  "Cónyuge",
+                  "Hermano(a)",
+                  "Hijo(a)",
+                  "Madre",
+                  "Padre",
+                  "Otro",
+                ]
+                .map(
+                  (p) => DropdownMenuItem(
+                    value: p,
+                    child: Text(p, style: const TextStyle(fontSize: 12)),
+                  ),
+                )
+                .toList(),
+        onChanged: onChanged,
+      ),
+    );
+  }
+
+  Widget _buttonCompacto(String text, Color color, VoidCallback onPressed) {
+    return SizedBox(
+      width: 90,
+      height: 30,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          elevation: 2,
         ),
         onPressed: onPressed,
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
+        child: Text(
+          text,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        ),
       ),
     );
   }
 
+  // TABLA CON MULTI-SELECCIÓN
   Widget _buildTable({
     required List<Map<String, String>> dataList,
-    required int? selectedIndex,
-    required void Function(int) onSelect,
+    required Set<int> selectedIndexes,
+    required Function(int, bool?) onSelectRow,
+    required Function(bool?) onSelectAll,
   }) {
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: const Color.fromRGBO(8, 12, 36, 1),
-          width: 1.5,
-        ),
+        border: Border.all(color: Colors.grey.shade400),
       ),
       child: DataTable(
-        headingRowColor: WidgetStateProperty.all(
-          const Color.fromRGBO(8, 12, 36, 1),
-        ),
+        headingRowHeight: 30,
+        dataRowMinHeight: 25,
+        dataRowMaxHeight: 30,
+        headingRowColor: WidgetStateProperty.all(kColorHeader),
         headingTextStyle: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
+          fontSize: 11,
         ),
         dataRowColor: WidgetStateProperty.resolveWith<Color?>((states) {
-          if (states.contains(WidgetState.selected)) {
-            return const Color.fromRGBO(
-              14,
-              30,
-              197,
-              0.2,
-            ); // azul claro al seleccionar
-          }
-          return Colors.white; // color normal
+          if (states.contains(WidgetState.selected))
+            return const Color.fromRGBO(14, 30, 197, 0.15);
+          return Colors.white;
         }),
+        showCheckboxColumn: true, // Mostrar checkbox
+        // Lógica para el checkbox maestro del encabezado
+        onSelectAll: (value) => onSelectAll(value),
         columns: const [
           DataColumn(label: Text("Nombre")),
           DataColumn(label: Text("A. Paterno")),
@@ -585,25 +573,48 @@ class _DatosGeneralesState extends State<DatosGenerales> {
         ],
         rows: List.generate(dataList.length, (index) {
           final item = dataList[index];
-          final isSelected = index == selectedIndex;
+          final isSelected = selectedIndexes.contains(index);
 
           return DataRow(
             selected: isSelected,
-            onSelectChanged: (_) => onSelect(index),
-            color: WidgetStateProperty.resolveWith<Color?>(
-              (states) => isSelected
-                  ? const Color.fromRGBO(14, 30, 197, 0.15)
-                  : (index % 2 == 0
-                        ? Colors.grey.shade100
-                        : Colors.grey.shade200),
-            ),
+            onSelectChanged: (val) => onSelectRow(index, val),
             cells: [
-              DataCell(Text(item["nombre"] ?? "")),
-              DataCell(Text(item["paterno"] ?? "")),
-              DataCell(Text(item["materno"] ?? "")),
-              DataCell(Text(item["cumple"] ?? "")),
-              DataCell(Text(item["ocupacion"] ?? "")),
-              DataCell(Text(item["parentesco"] ?? "")),
+              DataCell(
+                Text(
+                  item["nombre"] ?? "",
+                  style: const TextStyle(fontSize: 11),
+                ),
+              ),
+              DataCell(
+                Text(
+                  item["paterno"] ?? "",
+                  style: const TextStyle(fontSize: 11),
+                ),
+              ),
+              DataCell(
+                Text(
+                  item["materno"] ?? "",
+                  style: const TextStyle(fontSize: 11),
+                ),
+              ),
+              DataCell(
+                Text(
+                  item["cumple"] ?? "",
+                  style: const TextStyle(fontSize: 11),
+                ),
+              ),
+              DataCell(
+                Text(
+                  item["ocupacion"] ?? "",
+                  style: const TextStyle(fontSize: 11),
+                ),
+              ),
+              DataCell(
+                Text(
+                  item["parentesco"] ?? "",
+                  style: const TextStyle(fontSize: 11),
+                ),
+              ),
             ],
           );
         }),
@@ -611,9 +622,88 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     );
   }
 
-  // ---------- CRUD helpers para sección genérica ----------
+  // ==========================================
+  // LÓGICA DE SELECCIÓN MÚLTIPLE
+  // ==========================================
+
+  // Seleccionar/Deseleccionar una fila
+  void _handleRowSelection(
+    List<Map<String, String>> list,
+    Set<int> selectedSet,
+    int index,
+    bool? isSelected,
+    TextEditingController n,
+    TextEditingController p,
+    TextEditingController m,
+    TextEditingController o,
+    TextEditingController c,
+    ValueChanged<String?> setP,
+  ) {
+    setState(() {
+      if (isSelected == true) {
+        selectedSet.add(index);
+      } else {
+        selectedSet.remove(index);
+      }
+
+      // Lógica de llenado de campos:
+      // Solo llenamos si hay EXACTAMENTE UN elemento seleccionado
+      if (selectedSet.length == 1) {
+        final singleIndex = selectedSet.first;
+        final item = list[singleIndex];
+        n.text = item["nombre"] ?? "";
+        p.text = item["paterno"] ?? "";
+        m.text = item["materno"] ?? "";
+        o.text = item["ocupacion"] ?? "";
+        c.text = item["cumple"] ?? "";
+        setP(item["parentesco"]);
+      } else {
+        // Si hay 0 o >1 seleccionados, limpiamos los campos para evitar confusión
+        n.clear();
+        p.clear();
+        m.clear();
+        o.clear();
+        c.clear();
+        setP(null);
+      }
+    });
+  }
+
+  // Seleccionar/Deseleccionar TODO
+  void _handleSelectAll(
+    List<Map<String, String>> list,
+    Set<int> selectedSet,
+    bool? value,
+    TextEditingController n,
+    TextEditingController p,
+    TextEditingController m,
+    TextEditingController o,
+    TextEditingController c,
+    ValueChanged<String?> setP,
+  ) {
+    setState(() {
+      if (value == true) {
+        // Agregamos todos los índices
+        selectedSet.addAll(List.generate(list.length, (index) => index));
+      } else {
+        // Limpiamos
+        selectedSet.clear();
+      }
+      // Al seleccionar todo (o nada), limpiamos los campos de texto
+      n.clear();
+      p.clear();
+      m.clear();
+      o.clear();
+      c.clear();
+      setP(null);
+    });
+  }
+
+  // ==========================================
+  // CRUD HELPERS
+  // ==========================================
   void _agregarRegistro({
-    required List<Map<String, String>> list,
+    required List list,
     required TextEditingController nombre,
     required TextEditingController paterno,
     required TextEditingController materno,
@@ -621,9 +711,9 @@ class _DatosGeneralesState extends State<DatosGenerales> {
     required TextEditingController cumple,
     required String? parentesco,
     required ValueChanged<String?> resetParentesco,
+    required Set<int> selectedIndexes,
   }) {
     if (nombre.text.isEmpty || parentesco == null) {
-      // no agregar si faltan campos obligatorios
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Completa Nombre y Parentesco")),
       );
@@ -639,50 +729,59 @@ class _DatosGeneralesState extends State<DatosGenerales> {
         "cumple": cumple.text,
       });
       _limpiarCampos(
-        nombre: nombre,
-        paterno: paterno,
-        materno: materno,
-        ocupacion: ocupacion,
-        cumple: cumple,
-        resetParentesco: resetParentesco,
-        clearSelection: () {},
+        nombre,
+        paterno,
+        materno,
+        ocupacion,
+        cumple,
+        resetParentesco,
+        selectedIndexes,
       );
     });
   }
 
-  void _limpiarCampos({
-    required TextEditingController nombre,
-    required TextEditingController paterno,
-    required TextEditingController materno,
-    required TextEditingController ocupacion,
-    required TextEditingController cumple,
-    required ValueChanged<String?> resetParentesco,
-    required VoidCallback clearSelection,
-  }) {
-    nombre.clear();
-    paterno.clear();
-    materno.clear();
-    ocupacion.clear();
-    cumple.clear();
-    resetParentesco(null);
-    clearSelection();
-    setState(() {});
+  void _limpiarCampos(
+    TextEditingController n,
+    TextEditingController p,
+    TextEditingController m,
+    TextEditingController o,
+    TextEditingController c,
+    ValueChanged<String?> r,
+    Set<int> selectedSet,
+  ) {
+    n.clear();
+    p.clear();
+    m.clear();
+    o.clear();
+    c.clear();
+    r(null);
+    setState(() {
+      selectedSet.clear();
+    });
   }
 
   void _modificarRegistro({
-    required List<Map<String, String>> list,
+    required List list,
     required TextEditingController nombre,
     required TextEditingController paterno,
     required TextEditingController materno,
     required TextEditingController ocupacion,
     required TextEditingController cumple,
     required String? parentesco,
-    required int? Function() getSelectedIndex,
+    required Set<int> selectedIndexes,
     required ValueChanged<String?> resetParentesco,
-    required VoidCallback clearSelection,
   }) {
-    final idx = getSelectedIndex();
-    if (idx == null || idx < 0) return;
+    // Solo permitir modificar si hay exactamente un elemento seleccionado
+    if (selectedIndexes.length != 1) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Selecciona una sola fila para modificar"),
+        ),
+      );
+      return;
+    }
+    final idx = selectedIndexes.first;
+
     setState(() {
       list[idx] = {
         "nombre": nombre.text,
@@ -693,71 +792,93 @@ class _DatosGeneralesState extends State<DatosGenerales> {
         "cumple": cumple.text,
       };
       _limpiarCampos(
-        nombre: nombre,
-        paterno: paterno,
-        materno: materno,
-        ocupacion: ocupacion,
-        cumple: cumple,
-        resetParentesco: resetParentesco,
-        clearSelection: clearSelection,
+        nombre,
+        paterno,
+        materno,
+        ocupacion,
+        cumple,
+        resetParentesco,
+        selectedIndexes,
       );
     });
   }
 
   void _borrarRegistro({
-    required List<Map<String, String>> list,
-    required int? Function() getSelectedIndex,
-    required VoidCallback clearSelection,
+    required List list,
+    required Set<int> selectedIndexes,
+    required VoidCallback limpiarCampos,
   }) {
-    final idx = getSelectedIndex();
-    if (idx == null || idx < 0) return;
+    if (selectedIndexes.isEmpty) return;
+
     setState(() {
-      list.removeAt(idx);
-      clearSelection();
+      // Convertimos a lista y ordenamos descendente para borrar sin alterar índices pendientes
+      final List<int> indicesABorrar = selectedIndexes.toList()
+        ..sort((a, b) => b.compareTo(a));
+
+      for (int i in indicesABorrar) {
+        if (i < list.length) {
+          list.removeAt(i);
+        }
+      }
+      // Limpiamos selección y campos
+      selectedIndexes.clear();
+      limpiarCampos();
     });
   }
 
-  // al seleccionar fila, cargamos los controllers de esa sección
-  void _selectRow({
-    required List<Map<String, String>> list,
-    required int index,
-    required TextEditingController nombre,
-    required TextEditingController paterno,
-    required TextEditingController materno,
-    required TextEditingController ocupacion,
-    required TextEditingController cumple,
-    required ValueChanged<String?> setParentesco,
-  }) {
-    if (index < 0 || index >= list.length) {
-      // deseleccion
-      nombre.clear();
-      paterno.clear();
-      materno.clear();
-      ocupacion.clear();
-      cumple.clear();
-      setParentesco(null);
-      setState(() {});
-      return;
+  // Lógica fechas (sin cambios)
+  void _handleDateLogic(String value, TextEditingController controller) {
+    String raw = value.replaceAll('/', '');
+    if (raw.length > 9) raw = raw.substring(0, 9);
+    String formatted = raw.length <= 2
+        ? raw
+        : raw.length <= 5
+        ? raw.substring(0, 2) + '/' + raw.substring(2)
+        : raw.substring(0, 2) +
+              '/' +
+              raw.substring(2, 5) +
+              '/' +
+              raw.substring(5);
+    final parts = formatted.split('/');
+    if (parts.length >= 2 && parts[1].isNotEmpty) {
+      final mesNorm =
+          parts[1][0].toUpperCase() +
+          (parts[1].length > 1 ? parts[1].substring(1).toLowerCase() : '');
+      formatted =
+          parts[0] +
+          '/' +
+          (mesNorm.padRight(3)).substring(0, parts[1].length) +
+          (parts.length == 3 ? '/' + parts[2] : '');
     }
-    final item = list[index];
-    nombre.text = item["nombre"] ?? "";
-    paterno.text = item["paterno"] ?? "";
-    materno.text = item["materno"] ?? "";
-    ocupacion.text = item["ocupacion"] ?? "";
-    cumple.text = item["cumple"] ?? "";
-    setParentesco(item["parentesco"]);
-    setState(() {});
+    if (formatted != controller.text) {
+      controller.value = TextEditingValue(
+        text: formatted,
+        selection: TextSelection.collapsed(offset: formatted.length),
+      );
+    }
+    if (formatted.length == 11) {
+      final p = formatted.split('/');
+      final d = int.tryParse(p[0]), y = int.tryParse(p[2]);
+      final m = p[1][0].toUpperCase() + p[1].substring(1).toLowerCase();
+      if (d == null ||
+          d < 1 ||
+          d > 31 ||
+          !_mesesValidos.contains(m) ||
+          y == null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Fecha inválida")));
+      }
+    }
   }
 
   @override
   void dispose() {
-    // titulares
     _nombreTitular.dispose();
     _paternoTitular.dispose();
     _maternoTitular.dispose();
     _ocupacionTitular.dispose();
     _cumpleTitular.dispose();
-    // beneficiarios
     _nombreBenef.dispose();
     _paternoBenef.dispose();
     _maternoBenef.dispose();

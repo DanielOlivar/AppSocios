@@ -1,3 +1,4 @@
+import 'package:app_socios/Financiamiento/Financiamiento.dart';
 import 'package:flutter/material.dart';
 import '../ContratoData/ContratoData.dart';
 import '../DatosGenerales/DatosGenerales.dart';
@@ -24,7 +25,7 @@ class _MainTabViewState extends State<MainTabView> {
     _pages = [
       DatosGenerales(datosContrato: widget.datosContrato),
       CondicionesVenta(datosContrato: widget.datosContrato),
-      const PlaceholderView(title: 'Financiamiento'),
+      Financiamiento(),
       const PlaceholderView(title: 'Otros'),
     ];
   }
